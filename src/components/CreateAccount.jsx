@@ -1,9 +1,10 @@
 import { Transaction } from "@mysten/sui/transactions";
-import { Button, Container } from "@radix-ui/themes";
+import { Button, Container, Box } from "@radix-ui/themes";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { useNetworkVariable } from "../networkConfig";
+import { useState } from "react";
 
-export function CreateAccount() {
+export function CreateAccount({refetch}) {
   const packageID = useNetworkVariable("packageId");
   const suiClient = useSuiClient();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction({
@@ -18,6 +19,7 @@ export function CreateAccount() {
         },
       }),
   });
+  const [errorCreate, setErrorCreate] = useState(false)
 
   return (
     <Container>
@@ -29,6 +31,7 @@ export function CreateAccount() {
       >
         Create Account
       </Button>
+      {errorCreate? <Box>Error happened during Account creation. Please try again</Box>:null}
     </Container>
   );
 
@@ -37,7 +40,7 @@ export function CreateAccount() {
 
     tx.moveCall({
       arguments: [],
-      target: `${packageID}::crypto_will::create`,
+      target: `${packageID}::crypto_will::new`,
     });
 
     signAndExecute(
@@ -46,8 +49,13 @@ export function CreateAccount() {
       },
       {
         onSuccess: (result) => {
-          const objectId = result.effects?.created?.[0]?.reference?.objectId;
+          console.log(result)
+          refetch();
         },
+        onFailure: () => {
+          setErrorCreate(true);
+          console.log("error")
+        }
       },
     );
   }

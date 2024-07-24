@@ -1,7 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useSuiClientQuery, useSuiClientContext } from '@mysten/dapp-kit';
+import { useSuiClientQuery } from '@mysten/dapp-kit';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**
@@ -13,7 +13,6 @@ export function useObjectQuery(
 	params,
 	options,
 ) {
-	const ctx = useSuiClientContext();
 	const client = useQueryClient();
 	const response = useSuiClientQuery(RPC, params, options);
 	// const invalidate = async () => {

@@ -23,7 +23,7 @@ module crypto_will::crypto_will {
         }, ctx.sender())
     }
 
-    public fun upload(obj:&mut Record, ctx: &mut TxContext, description: String, cid:u64) {
+    public fun upload(obj:&mut Record, description: String, cid:u64, ctx: &mut TxContext) {
         let file = File {
             id: object::new(ctx),
             cid,
