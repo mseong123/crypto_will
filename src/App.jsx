@@ -1,11 +1,11 @@
-import { ConnectButton } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { Box, Container, Flex, Heading } from "@radix-ui/themes";
 import { WalletStatus } from "./WalletStatus";
-import { WalletStatus } from "./WalletStatus";
+import { useState } from "react"
+import { Account } from "./components/Account"
 
 function App() {
-  const [account, setAccount] = useState();
-
+  const currentAccount = useCurrentAccount();
 
   return (
     <>
@@ -34,17 +34,7 @@ function App() {
           style={{ background: "var(--gray-a2)", minHeight: 500 }}
         >
           <WalletStatus />
-          {counterId ? (
-              <Counter id={counterId} />
-            ) : (
-              <CreateCounter
-                onCreated={(id) => {
-                  window.location.hash = id;
-                  setCounter(id);
-                }}
-              />
-            )
-          )}
+          {currentAccount ? <Account/>:null}
         </Container>
       </Container>
     </>

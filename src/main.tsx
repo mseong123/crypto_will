@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Theme } from "@radix-ui/themes";
-import App from "./App.tsx";
+import App from "./App.jsx";
 import { networkConfig } from "./networkConfig.ts";
 
 const queryClient = new QueryClient();
