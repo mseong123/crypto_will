@@ -19,7 +19,7 @@ function App() {
         }}
       >
         <Box>
-          <Heading>Crypto Wills</Heading>
+          <Heading>Crypto_Will</Heading>
         </Box>
 
         <Box>

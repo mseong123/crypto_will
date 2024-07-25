@@ -3,10 +3,12 @@ import { Button, Container, Box } from "@radix-ui/themes";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { useNetworkVariable } from "../networkConfig";
 import { useState } from "react";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export function CreateAccount({refetch}) {
   const packageID = useNetworkVariable("packageId");
   const suiClient = useSuiClient();
+  const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction({
     execute: async ({ bytes, signature }) =>
       await suiClient.executeTransactionBlock({
@@ -52,10 +54,6 @@ export function CreateAccount({refetch}) {
           console.log(result)
           refetch();
         },
-        onFailure: () => {
-          setErrorCreate(true);
-          console.log("error")
-        }
       },
     );
   }

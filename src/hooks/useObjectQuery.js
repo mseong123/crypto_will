@@ -5,9 +5,8 @@ import { useSuiClientQuery } from '@mysten/dapp-kit';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**
- * Fetches an object, returning the response from RPC and a callback
- * to invalidate it.
- */
+ * Fetches an object
+ * */
 export function useObjectQuery(
 	RPC,
 	params,
@@ -15,11 +14,5 @@ export function useObjectQuery(
 ) {
 	const client = useQueryClient();
 	const response = useSuiClientQuery(RPC, params, options);
-	// const invalidate = async () => {
-	// 	await client.invalidateQueries({queryKey:["hello",params]});
-	// };
-
-	
-
 	return response;
 }
