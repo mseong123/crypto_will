@@ -4,6 +4,15 @@ import {decodeBase64, encodeBase64 } from 'tweetnacl-util'
 import { decodeSuiPrivateKey, encodeSuiPrivateKey } from '@mysten/sui/cryptography';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 
+function uint8ArrayToBase64(uint8Array) {
+    let binaryString = '';
+    for (let i = 0; i < uint8Array.length; i++) {
+      binaryString += String.fromCharCode(uint8Array[i]);
+    }
+    return btoa(binaryString);
+  }
+
+
 export function encrypt() {
 const privateKeyBase64 = "ANXOKEh9oTOsPdXqf0HnyCDFTAVPeIcs1nkyEzzfZGLP";
 // const privateKey = decodeBase64(privateKeyBase64)
@@ -23,7 +32,9 @@ let binaryString = atob(privateKeyBase64);
   let {schema, secretKey} = decodeSuiPrivateKey(encoded)
   console.log(decodeSuiPrivateKey(encoded))
   const keypair = Ed25519Keypair.fromSecretKey(secretKey)
-  console.log(keypair.getPublicKey().toSuiAddress())
-// let ms = decodeSuiPrivateKey("ANXOKEh9oTOsPdXqf0HnyCDFTAVPeIcs1nkyEzzfZGLP")
-// console.log(ms)
+  const newArray = new Uint8Array(secretKey.length + 1);
+  newArray[0] = 0;
+  newArray.set(secretKey, 1);
+  
+  console.log(uint8ArrayToBase64(newArray))
 }
