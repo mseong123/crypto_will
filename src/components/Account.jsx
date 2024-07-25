@@ -6,8 +6,10 @@ import { Transaction } from "@mysten/sui/transactions";
 import { useSignature } from "../hooks/useSignature";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { encrypt } from "../utils/encryption"
+import { Upload } from "./Upload"
 
 encrypt()
+
 
 export function Account ({AccountID}) {
     const packageId = useNetworkVariable('packageId');
@@ -41,12 +43,12 @@ export function Account ({AccountID}) {
     
     return (
         <div>
-            <Button onClick={()=>{response.refetch()}}>Upload</Button>
+            <Upload/>
         </div>
     )
 }
 
-function Upload(response, packageID, signAndExecute) {
+function UploadSui(response, packageID, signAndExecute) {
   const tx = new Transaction();
 
   tx.moveCall({
