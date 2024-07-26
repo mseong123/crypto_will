@@ -27,7 +27,7 @@ export function Record({encryptionPhrase,response, fields,index}) {
                 <Card.Text className="d-inline-block me-3">
                     Description: <span style={{fontWeight:500}}>{fields.description[index]}</span>
                 </Card.Text>
-                <Card.Text className="d-inline-block">
+                <Card.Text className="d-inline-block me-3">
                     Filename: <span style={{fontWeight:500}}>{fields.filename[index]}</span>
                 </Card.Text>
                 <Card.Text className="d-inline-block">
