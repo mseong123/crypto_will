@@ -2,8 +2,8 @@ import Accordion from 'react-bootstrap/Accordion';
 import { UploadInput} from './UploadInput';
 import { useState } from 'react'
 
-export function AccordionRecord({response}) {
-    
+export function AccordionRecord({encryptionPhrase, response}) {
+    console.log(response)
     
     return (
         <>
@@ -13,7 +13,7 @@ export function AccordionRecord({response}) {
                     <Accordion.Header>Will</Accordion.Header>
                     <Accordion.Body>
                         <hr/>
-                        <UploadInput response={response} category="will"></UploadInput>
+                        <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
                     </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">

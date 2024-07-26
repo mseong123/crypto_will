@@ -1,10 +1,10 @@
 import { Transaction } from "@mysten/sui/transactions";
 
-export function updateAccount(response, packageID, signAndExecute) {
+export function updateAccount(category, description, encryptedCID, filename, response, packageID, signAndExecute, setLoading) {
     const tx = new Transaction();
-  
+    console.log(response.data.data[0].data.objectId)
     tx.moveCall({
-      arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string(), tx.pure.string("description3")],
+      arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string(category), tx.pure.string(description), tx.pure.string(encryptedCID), tx.pure.string(filename), tx.pure.string(String(Date.now()))],
       target: `${packageID}::crypto_will::upload`,
     });
   
@@ -14,8 +14,9 @@ export function updateAccount(response, packageID, signAndExecute) {
       },
       {
         onSuccess: (result) => {
-          console.log(result)
-         
+          setLoading(false)
+          response.refetch();
+
         },
       },
     );

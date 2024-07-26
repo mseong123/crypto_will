@@ -3,7 +3,6 @@ import { useNetworkVariable } from "../networkConfig"
 
 export function useSignature() {
     const suiClient = useSuiClient();
-    const packageID = useNetworkVariable("packageId");
     const { mutate: signAndExecute } = useSignAndExecuteTransaction({
       execute: async ({ bytes, signature }) =>
         await suiClient.executeTransactionBlock({

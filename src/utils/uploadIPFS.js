@@ -19,7 +19,7 @@ export async function pinFileToIPFS (setError, id) {
     formData.append('pinataOptions', pinataOptions);
     
     try{
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPF", formData, {
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
         maxBodyLength: "Infinity",
         headers: {
           'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,

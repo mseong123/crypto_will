@@ -15,7 +15,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 export function Account ({encryptionPhrase,setEncryptionPhrase}) {
     const packageId = useNetworkVariable('packageId');
-    const signAndExecute = useSignature()
     const account = useCurrentAccount()
 	  const response = useObjectQuery(
       'getOwnedObjects',
@@ -70,7 +69,7 @@ export function Account ({encryptionPhrase,setEncryptionPhrase}) {
                 </Form>
               </Card.Body>
             </Card>
-            {encryptionPhrase? <AccordionRecord response={response}/>:null}
+            {encryptionPhrase? <AccordionRecord encryptionPhrase={encryptionPhrase} response={response}/>:null}
         </div>
     )
 }

@@ -30,7 +30,7 @@ module crypto_will::crypto_will {
         obj.description.push_back(description);
         obj.encryptedCID.push_back(encryptedCID);
         obj.filename.push_back(filename);
-        obj.timestamp.push_back(timestamp);
+        obj.timestamp.push_back(timestamp)
     }
 
     
