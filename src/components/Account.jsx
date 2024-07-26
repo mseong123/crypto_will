@@ -1,6 +1,5 @@
 import { useObjectQuery } from "../hooks/useObjectQuery"
 import { CreateAccount } from "./CreateAccount"
-import { Text, Button } from "@radix-ui/themes";
 import { useNetworkVariable } from "../networkConfig"
 import { Transaction } from "@mysten/sui/transactions";
 import { useSignature } from "../hooks/useSignature";
@@ -10,10 +9,11 @@ import { encryptAssym } from "../utils/encryptionAssym"
 import { Upload } from "./Upload"
 import { AccordionRecord } from './AccordionRecord';
 import Alert from 'react-bootstrap/Alert';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
-
-
-export function Account ({AccountID}) {
+export function Account ({encryptionPhrase,setEncryptionPhrase}) {
     const packageId = useNetworkVariable('packageId');
     const signAndExecute = useSignature()
     const account = useCurrentAccount()
@@ -39,7 +39,36 @@ export function Account ({AccountID}) {
 
     return (
         <div>
+            <h4>Account</h4>
+            <Card>
+              <Card.Body>
+              {!encryptionPhrase? (
+                <>
+                  <Card.Title>Please enter Encryption Phrase</Card.Title>
+                  <Card.Text>
+                    Encryption Phrase is used to encrypt your files on the blockchain to ensure confidentiality and security of your data.
+                    Please use a memorable and unique passphrase <span style={{color:"orange"}}>(your wallet's private key is a good example)</span>
+                  </Card.Text>
+                  
+                </>):<Card.Title>Encryption phrase: {encryptionPhrase}</Card.Title>}
+                <Form>
+                    <Form.Group controlId="passphrase" className="mb-3">
+                      <Form.Control 
+                          type="text"
+                          size="sm"
+                          htmlSize={30}
+                          placeholder="Encryption Passphrase"
+                      />
+                    </Form.Group>
+                    <Button type="button" onClick={(e)=>{e.preventDefault();
+                      setEncryptionPhrase(document.getElementById("passphrase").value);
+                      document.getElementById("passphrase").value = ""}}>{encryptionPhrase? "Change":"Enter"}</Button>
+                </Form>
+                
+              </Card.Body>
+            </Card>
             <AccordionRecord/>
+            <Upload/>
             <Button onClick={()=>UploadSui(response, packageId, signAndExecute)}>Upload SUI</Button>
         </div>
     )

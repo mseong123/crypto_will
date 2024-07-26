@@ -5,8 +5,8 @@ export function Upload() {
        <> 
             <input type="file" id="fileInput" onChange={(e)=>pinFileToIPFS(e)} />
             <a  href="https://amber-real-catfish-990.mypinata.cloud/ipfs/QmPNwNG34VxbaTvoVzjM9biU9zsdFEd3RrEGf3doTvVpjT" download="file.txt">Preview</a>
-            <button onClick={()=>downloadFile()}>Download</button>
             
+            <button onClick={()=>downloadFile()}>Download</button>
        </>
     )
     

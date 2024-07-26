@@ -10,12 +10,13 @@ function App() {
   const currentAccount = useCurrentAccount();
   const [page, setPage] = useState("Account")
   const [theme, setTheme] = useState("light")
+  const [encryptionPhrase,setEncryptionPhrase] = useState("");
 
   return (
     <Container data-bs-theme={theme}>
         <NavBar setPage={setPage}/>
         <WalletStatus/>
-        {currentAccount? page === "Account"? <Account/>:null : null}
+        {currentAccount? page === "Account"? <Account encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null : null}
         
     </Container>
     

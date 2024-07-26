@@ -14,8 +14,8 @@ export function CreateAccount({refetch}) {
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Body>
-        <Card.Title>Account creation</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">Click on link below</Card.Subtitle>
+        <Card.Title>No Account exist</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">Account Creation</Card.Subtitle>
         <Card.Text>
            Your account is used to store and manage your personal records on SUI's blockchain.
         </Card.Text>
