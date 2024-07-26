@@ -5,6 +5,13 @@ import { useState } from 'react'
 
 export function AccordionRecord({encryptionPhrase, response}) {
     console.log(response)
+
+    const fields = response.data.data[0].data.content.fields
+    const WillRecords = response.data.data[0].data.content.fields.category.map((category,index)=>{
+        if (category === "Will") {
+            return <Record fields={fields} index={index}/>
+        }
+    })
     
     return (
         <>
