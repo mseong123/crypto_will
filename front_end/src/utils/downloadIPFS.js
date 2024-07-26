@@ -3,13 +3,13 @@ import FormData from 'form-data';
 import { IPFS_API } from "../constants"
 import { IPFS_Gateway } from "../constants"
 
-export function downloadIPFS({decrypt}) {
+export function downloadIPFS({decrypt, setError}) {
     const ipfsUrl = IPFS_Gateway + decrypt;
 
             fetch(ipfsUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        setError('Network response was not ok');
                     }
                     return response.blob(); // Convert response to Blob
                 })
@@ -36,6 +36,7 @@ export function downloadIPFS({decrypt}) {
                     document.body.removeChild(a);
                 })
                 .catch(error => {
-                    console.error('Error downloading file:', error);
+                    
+                    setError('Error downloading file:'+ error);
                 });
 }

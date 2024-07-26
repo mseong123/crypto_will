@@ -12,6 +12,8 @@ return encrypted
 }
 
 export function decryptAES(encryptionPhrase, encryptedCID) {
+  console.log(encryptionPhrase)
+  console.log(encryptedCID)
   const key = CryptoJS.enc.Hex.parse(CryptoJS.SHA256(encryptionPhrase).toString());
   const fixedIV = CryptoJS.enc.Hex.parse("00000000000000000000000000000000");
   // Decrypt

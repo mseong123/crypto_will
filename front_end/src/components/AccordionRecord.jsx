@@ -9,7 +9,7 @@ export function AccordionRecord({encryptionPhrase, response}) {
     const fields = response.data.data[0].data.content.fields
     const WillRecords = response.data.data[0].data.content.fields.category.map((category,index)=>{
         if (category === "Will") {
-            return <Record fields={fields} index={index}/>
+            return <Record encryptionPhrase={encryptionPhrase} key={"Will-"+index} response={response} fields={fields} index={index}/>
         }
     })
     
@@ -20,7 +20,7 @@ export function AccordionRecord({encryptionPhrase, response}) {
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Will</Accordion.Header>
                     <Accordion.Body>
-
+                        {WillRecords}
                         <hr/>
                         <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
                     </Accordion.Body>
