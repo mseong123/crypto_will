@@ -12,10 +12,11 @@ function App() {
   const [theme, setTheme] = useState("light")
 
   return (
-    <Container data-bs-theme={theme} className={"p-0"}>
-        <NavBar/>
-        <WalletStatus />
-        {currentAccount ? <Account/>:null}
+    <Container data-bs-theme={theme}>
+        <NavBar setPage={setPage}/>
+        <WalletStatus/>
+        {page === "Account"? currentAccount ? <Account/>:null : null}
+        
     </Container>
     
   );

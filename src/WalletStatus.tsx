@@ -7,8 +7,8 @@ export function WalletStatus() {
   return (
     <>
       {account?
-        <Alert variant="success">
-            <Alert.Heading>Wallet connected.</Alert.Heading>
+        <Alert  style={{overflowWrap: "break-word", backgroundColor:"turquoise", color:"#606060"}}>
+            <Alert.Heading >Wallet connected.</Alert.Heading>
             Address: {account.address}
         </Alert>:<Alert variant="warning">
           Wallet not connected. Please Connect your Wallet
