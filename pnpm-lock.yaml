@@ -29,6 +29,9 @@ importers:
       axios:
         specifier: ^1.7.2
         version: 1.7.2
+      base-x:
+        specifier: ^5.0.0
+        version: 5.0.0
       bootstrap:
         specifier: ^5.3.3
         version: 5.3.3(@popperjs/core@2.11.8)

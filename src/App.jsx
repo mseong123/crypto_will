@@ -1,43 +1,23 @@
-import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import { Box, Container, Flex, Heading } from "@radix-ui/themes";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 import { WalletStatus } from "./WalletStatus";
 import { useState } from "react"
-import { Account } from "./components/Account"
+import { Account } from "./components/Account";
+import { NavBar } from "./components/NavBar";
+import Container from 'react-bootstrap/Container';
+
 
 function App() {
   const currentAccount = useCurrentAccount();
+  const [page, setPage] = useState("Account")
+  const [theme, setTheme] = useState("light")
 
   return (
-    <>
-      <Flex
-        position="sticky"
-        px="4"
-        py="2"
-        justify="between"
-        style={{
-          borderBottom: "1px solid var(--gray-a2)",
-        }}
-      >
-        <Box>
-          <Heading>Crypto_Will</Heading>
-        </Box>
-
-        <Box>
-          <ConnectButton />
-        </Box>
-      </Flex>
-      <Container>
-        <Container
-          mt="5"
-          pt="2"
-          px="4"
-          style={{ background: "var(--gray-a2)", minHeight: 500 }}
-        >
-          <WalletStatus />
-          {currentAccount ? <Account/>:null}
-        </Container>
-      </Container>
-    </>
+    <Container data-bs-theme={theme} className={"p-0"}>
+        <NavBar/>
+        <WalletStatus />
+        {currentAccount ? <Account/>:null}
+    </Container>
+    
   );
 }
 

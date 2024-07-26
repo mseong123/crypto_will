@@ -1,21 +1,19 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import { Container, Flex, Heading, Text } from "@radix-ui/themes";
+import Alert from 'react-bootstrap/Alert';
 
 export function WalletStatus() {
   const account = useCurrentAccount();
 
   return (
-    <Container my="2">
-      <Heading mb="2">Wallet Status</Heading>
-
-      {account ? (
-        <Flex direction="column">
-          <Text>Wallet connected</Text>
-          <Text>Address: {account.address}</Text>
-        </Flex>
-      ) : (
-        <Text>Wallet not connected. Please connect your Wallet.</Text>
-      )}
-    </Container>
+    <>
+      {account?
+        <Alert variant="success">
+            <Alert.Heading>Wallet connected.</Alert.Heading>
+            Address: {account.address}
+        </Alert>:<Alert variant="warning">
+          Wallet not connected. Please Connect your Wallet
+        </Alert>
+      }
+    </>
   );
 }

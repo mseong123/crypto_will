@@ -5,10 +5,10 @@ import { useNetworkVariable } from "../networkConfig"
 import { Transaction } from "@mysten/sui/transactions";
 import { useSignature } from "../hooks/useSignature";
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import { encrypt } from "../utils/encryption"
+import { encryptAES } from "../utils/encryptionAES"
+import { encryptAssym } from "../utils/encryptionAssym"
 import { Upload } from "./Upload"
 
-encrypt()
 
 
 export function Account ({AccountID}) {
@@ -31,19 +31,20 @@ export function Account ({AccountID}) {
     
     if (response.isPending) return <Text>Loading...</Text>;
 
-    if (response.error) 
+    if (response.error)
       return (
         <Box>
           <Text>Error: {response.error.message}</Text>
           <CreateAccount refetch={response.refetch}/>
           </Box>
       );
-    
+    console.log(response)
     if (response.data.data.length === 0) return <CreateAccount refetch={response.refetch}/>
-    
+
     return (
         <div>
             <Upload/>
+            <Button onClick={()=>UploadSui(response, packageId, signAndExecute)}>Upload SUI</Button>
         </div>
     )
 }
@@ -52,7 +53,7 @@ function UploadSui(response, packageID, signAndExecute) {
   const tx = new Transaction();
 
   tx.moveCall({
-    arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string("CID"), tx.pure.string("description")],
+    arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string("CID3"), tx.pure.string("description3")],
     target: `${packageID}::crypto_will::upload`,
   });
 

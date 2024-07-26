@@ -14,7 +14,7 @@ function uint8ArrayToBase64(uint8Array) {
   }
 
 
-export function encrypt(secretKey) {
+export function encryptAES(secretKey) {
 const privateKeyBase64 = "ANXOKEh9oTOsPdXqf0HnyCDFTAVPeIcs1nkyEzzfZGLP";
 // const privateKey = decodeBase64(privateKeyBase64)
 // console.log(privateKey)
