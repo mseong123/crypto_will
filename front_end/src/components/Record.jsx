@@ -14,15 +14,12 @@ export function Record({encryptionPhrase,response, fields,index}) {
     const [loading, setLoading]= useState(false);
     let decrypted;
     if (!error) {
-        decrypted = decryptAES(encryptionPhrase,fields.encryptedCID[index], setError);
+        decrypted = decryptAES(encryptionPhrase,fields.encryptedCID[index], setError, index);
     }
     const signAndExecute = useSignature();
     const packageId = useNetworkVariable('packageId');
 
-    useEffect(() => {
-        setError(null)
-        // Perform any side effects here
-      }, [encryptionPhrase]);
+    
 
     return (
         <Card className="mb-2">
@@ -33,7 +30,19 @@ export function Record({encryptionPhrase,response, fields,index}) {
                 <Card.Text className="d-inline-block">
                     Filename: <span style={{fontWeight:500}}>{fields.filename[index]}</span>
                 </Card.Text>
-                {error? <Alert className="mt-3" variant="warning">{error}</Alert>:(
+                <Card.Text className="d-inline-block">
+                    Timestamp: <span style={{fontWeight:500}}>{Date(fields.timestamp[index]).toString()}</span>
+                </Card.Text>
+                {error? (
+                    <>
+                        <Alert className="mt-3" variant="warning">{error}</Alert>
+                        <Button variant="primary" type="button" onClick={()=>{
+                            deleteRecord(index, packageId, response, signAndExecute, setLoading)
+                        }}>
+                            Delete File
+                        </Button>
+                    </>)
+                    :(
                     <>
                         <Card.Text>
                             <Card.Link target={"_blank"} href={IPFS_Gateway+decrypted}>Preview</Card.Link>
@@ -44,7 +53,6 @@ export function Record({encryptionPhrase,response, fields,index}) {
                                 Delete File
                             </Button>
                         </Card.Text>
-                        
                     </>
                 )}
                 {loading? <Alert className="mt-3" variant="info">Deleting...</Alert>:null}
