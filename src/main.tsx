@@ -8,6 +8,7 @@ import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.jsx";
 import { networkConfig } from "./networkConfig.ts";
+import './style.css'
 
 const queryClient = new QueryClient();
 

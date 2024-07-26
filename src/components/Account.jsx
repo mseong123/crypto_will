@@ -8,6 +8,8 @@ import { useCurrentAccount } from "@mysten/dapp-kit";
 import { encryptAES } from "../utils/encryptionAES"
 import { encryptAssym } from "../utils/encryptionAssym"
 import { Upload } from "./Upload"
+import { AccordionRecord } from './AccordionRecord';
+import Alert from 'react-bootstrap/Alert';
 
 
 
@@ -25,25 +27,19 @@ export function Account ({AccountID}) {
         options: { showType: true, showContent: true },
       },
       {
-
       }
     );
     
-    if (response.isPending) return <Text>Loading...</Text>;
+    if (response.isPending) return <Alert>Loading...</Alert>;
 
-    if (response.error)
-      return (
-        <Box>
-          <Text>Error: {response.error.message}</Text>
-          <CreateAccount refetch={response.refetch}/>
-          </Box>
-      );
+    if (response.error) return <Alert>Error: {response.error.message}</Alert>
+      
     console.log(response)
     if (response.data.data.length === 0) return <CreateAccount refetch={response.refetch}/>
 
     return (
         <div>
-            <Upload/>
+            <AccordionRecord/>
             <Button onClick={()=>UploadSui(response, packageId, signAndExecute)}>Upload SUI</Button>
         </div>
     )

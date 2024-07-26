@@ -15,7 +15,7 @@ function App() {
     <Container data-bs-theme={theme}>
         <NavBar setPage={setPage}/>
         <WalletStatus/>
-        {page === "Account"? currentAccount ? <Account/>:null : null}
+        {currentAccount? page === "Account"? <Account/>:null : null}
         
     </Container>
     

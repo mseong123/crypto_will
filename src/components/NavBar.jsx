@@ -20,8 +20,6 @@ export function NavBar ({setPage}) {
                         <Nav.Link className="me-auto">
                             <div onClick={()=>setPage("Trustee")} style={{cursor:"pointer"}}>Trustee</div>
                         </Nav.Link>
-                        
-                        
                     </Nav>
                     <ConnectButton style={{backgroundColor:"turquoise"}}/>
                 </Navbar.Collapse>
