@@ -6,3 +6,24 @@
     background-color:#036272;
     color:white;
 }
+
+.alert {
+    padding-top:0.5rem;
+    padding-bottom:0.5rem;
+}
+
+.alert-warning {
+    background-color:#ffac3c;
+}
+
+.btn-primary {
+    background-color:turquoise;
+    border-color:turquoise;
+    color:rgb(96, 96, 96);
+}
+
+.btn-primary:hover {
+    background-color:#036272;
+    border-color:#036272;
+}
+

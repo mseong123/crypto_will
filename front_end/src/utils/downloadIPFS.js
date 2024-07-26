@@ -3,9 +3,9 @@ import FormData from 'form-data';
 import { IPFS_API } from "../constants"
 import { IPFS_Gateway } from "../constants"
 
-export function downloadIPFS({decrypt, setError}) {
-    const ipfsUrl = IPFS_Gateway + decrypt;
-
+export function downloadIPFS(decrypted, setError, filename) {
+    
+    const ipfsUrl = IPFS_Gateway + decrypted;
             fetch(ipfsUrl)
                 .then(response => {
                     if (!response.ok) {
@@ -23,7 +23,7 @@ export function downloadIPFS({decrypt, setError}) {
                     a.href = url;
                     
                     // Set the default file name
-                    a.download = 'file.txt'; // Specify the file name here
+                    a.download = filename; // Specify the file name here
 
                     // Append the link to the body
                     document.body.appendChild(a);
