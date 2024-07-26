@@ -1,9 +1,10 @@
-import { Transaction } from "@mysten/sui/transactions";
+
 import { useNetworkVariable } from "../networkConfig";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import { useSignature } from '../hooks/useSignature';
+import {createAccount} from '../utils/createAccount'
 
 
 export function CreateAccount({refetch}) {
@@ -19,29 +20,8 @@ export function CreateAccount({refetch}) {
         <Card.Text>
            Your account is used to store and manage your personal records on SUI's blockchain.
         </Card.Text>
-        <Card.Link style={{cursor:"pointer"}} onClick={()=>create(packageID)}>Create Account</Card.Link>
+        <Card.Link style={{cursor:"pointer"}} onClick={()=>createAccount(packageID,signAndExecute, refetch)}>Create Account</Card.Link>
       </Card.Body>
     </Card>
   );
-
-  function create() {
-    const tx = new Transaction();
-
-    tx.moveCall({
-      arguments: [],
-      target: `${packageID}::crypto_will::new`,
-    });
-
-    signAndExecute(
-      {
-        transaction: tx,
-      },
-      {
-        onSuccess: (result) => {
-          console.log(result)
-          refetch();
-        },
-      },
-    );
-  }
 }

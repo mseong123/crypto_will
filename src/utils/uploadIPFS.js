@@ -2,14 +2,10 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { IPFS_API } from "../constants"
 
-export async function pinFileToIPFS (event) {
+export async function pinFileToIPFS (setError, id) {
     const formData = new FormData();
-    const file = event.target.files[0]; // Get the selected file
+    const file = document.getElementById(id).files[0]; // Get the selected file
 
-    if (!file) {
-        console.error('No file selected');
-        return;
-    }
     formData.append('file', file)
 
     const pinataMetadata = JSON.stringify({
@@ -23,7 +19,7 @@ export async function pinFileToIPFS (event) {
     formData.append('pinataOptions', pinataOptions);
     
     try{
-      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+      const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPF", formData, {
         maxBodyLength: "Infinity",
         headers: {
           'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
@@ -31,7 +27,9 @@ export async function pinFileToIPFS (event) {
         }
       });
       console.log(res.data);
+      return res.data
+      
     } catch (error) {
-      console.log(error);
+      setError("Error happened during uploading of file to IPFS")
     }
 }

@@ -29,7 +29,7 @@ module crypto_will::crypto_will {
         obj.category.push_back(category);
         obj.description.push_back(description);
         obj.encryptedCID.push_back(encryptedCID);
-        obj.encryptedCID.push_back(filename);
+        obj.filename.push_back(filename);
         obj.timestamp.push_back(timestamp);
     }
 
