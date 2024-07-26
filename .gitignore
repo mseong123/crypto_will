@@ -1,4 +1,5 @@
+front_end/node_modules/
+front_end/move/crypto_will/build/
+front_end/dist/
 node_modules/
-move/crypto_will/build/
-dist/
 
