@@ -6,15 +6,12 @@ import { CreateAccount } from "./CreateAccount"
 import { useNetworkVariable } from "../networkConfig"
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { SendRequestForRecord } from "./SendRequestForRecord"
-import { DisplayTrusteeRecord } from "./DisplayTrusteeRecord"
 
 export function TrusteeAction() {
     return (
         <>
             <h4 className="mb-3">Trustee Action</h4>
             <SendRequestForRecord/>
-            <DisplayTrusteeRecord/>
-
         </>
     )
 }

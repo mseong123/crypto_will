@@ -56,12 +56,12 @@ export function TrusteeSummary() {
             </Card>
             )
         })
+        
         return <>{trusteeCards}</>;
     }
-    
     return (
         <>
-            <h4>You are the Trustee for the following Accounts:</h4>
+            <h4 className="mb-2">You are the Trustee for the following Accounts:</h4>
             <TrusteeList/>
         </>
     )

@@ -1,6 +1,6 @@
 import { Transaction } from "@mysten/sui/transactions";
 
-export function sendTrusteeRecord(objectID, category, description, encryptedCID, filename, timestamp, packageID, signAndExecute) {
+export function sendTrusteeRecord(response, objectID, category, description, encryptedCID, filename, timestamp, packageID, signAndExecute) {
     const tx = new Transaction();
 
     

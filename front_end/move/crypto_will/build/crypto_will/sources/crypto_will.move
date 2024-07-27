@@ -89,7 +89,7 @@ module crypto_will::crypto_will {
 
         transfer::transfer(Trustee {
             id: object::new(ctx),
-            owner:trusteeAddress,
+            owner:ctx.sender(),
             testator_alias:testator_alias,
             timestamp:timestamp
         }, trusteeAddress);
@@ -121,7 +121,7 @@ module crypto_will::crypto_will {
         transfer::transfer({
             TrusteeRecord {
                 id:object::new(ctx),
-                testatorAddress:trusteeAddress,
+                testatorAddress:ctx.sender(),
                 testatorAlias:testatorAlias,
                 category:category,
                 description:description,

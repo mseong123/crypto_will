@@ -31,7 +31,7 @@ export function ListTrustee({accountResponse, trusteeResponse}) {
         const encryptedCID = accountResponse.data.data[0].data.content.fields.encryptedCID;
         const filename = accountResponse.data.data[0].data.content.fields.filename;
         const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
-        sendTrusteeRecord(objectID, category, description, encryptedCID, filename, timestamp, packageId, signAndExecute)
+        sendTrusteeRecord(response, objectID, category, description, encryptedCID, filename, timestamp, packageId, signAndExecute)
     }
    
     function matchPublicKey(address) {
@@ -40,7 +40,7 @@ export function ListTrustee({accountResponse, trusteeResponse}) {
             match = response.data.data.filter(data=> 
                  data.data.content.fields.trusteeAddress === address)
         }
-        console.log(match)
+        
         return (
             <>
                 {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId)} >Send Trustee Records</Button>:null}
