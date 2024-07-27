@@ -30,7 +30,6 @@ export function AccordionRecord({encryptionPhrase, response}) {
     
     return (
         <>
-            <h4>Records</h4>
             <Accordion className="mb-4">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>Will</Accordion.Header>

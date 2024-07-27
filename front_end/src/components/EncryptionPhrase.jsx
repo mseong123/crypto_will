@@ -1,4 +1,10 @@
-export function EncryptionPhrase() {
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+
+
+export function EncryptionPhrase({encryptionPhrase, setEncryptionPhrase}) {
     return(
         <Card className="mb-3">
             <Card.Body>
