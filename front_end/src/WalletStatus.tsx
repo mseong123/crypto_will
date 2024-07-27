@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import CopyTextButton from './components/CopyTextButton';
 
 export function WalletStatus() {
   const account = useCurrentAccount();
@@ -15,9 +16,9 @@ export function WalletStatus() {
         <Alert variant="dark" style={{overflowWrap: "break-word", backgroundColor:"#ffffff", color:"#606060"}}>
           <Container>
             <Row>
-              <Col style={{width: "28px"}}><Image src="home.png" rounded style={{width: "30px"}}/></Col>
-              <Col>Address:</Col>
-              <Col>{account.address}</Col>
+              <Col style={{paddingRight: "0px", padding: "10px"}}>Address:</Col>
+              <Col style={{padding: "10px", paddingLeft: "0px"}}>{account.address}</Col>
+              <Col style={{width: "28px", padding: "0px"}}><CopyTextButton/></Col>
             </Row>
           </Container>
         </Alert>:<Alert variant="dark" style={{backgroundColor:"#FFFFFF", borderColor:"#FFFFFF", height: "86vh"}}>

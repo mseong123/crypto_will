@@ -25,7 +25,7 @@ export function UploadInput({encryptionPhrase, response, category}) {
                 const description = document.getElementById(category + "_description").value
                 const formData = new FormData();
                 const file = document.getElementById(category + "_file").files[0]; 
-                updateAccount(category, description, encryptedCID, file.name, response, packageId, signAndExecute, setLoading)
+                updateAccount(category, description, encryptedCID, file.name, response, packageId, signAndExecute, setLoading, category + "_description", category + "_file")
             }
            }} 
         >
