@@ -13,7 +13,7 @@ export function WalletStatus() {
   return (
     <>
       {account?
-        <Alert variant="dark" style={{overflowWrap: "break-word", backgroundColor:"#ffffff", color:"#606060"}}>
+        <Alert variant="dark" style={{overflowWrap: "break-word", borderColor: "#d1d1d1", backgroundColor:"#ffffff", color:"#606060"}}>
           <Container>
             <Row>
               <Col style={{paddingRight: "0px", padding: "10px"}}>Address:</Col>
@@ -23,8 +23,7 @@ export function WalletStatus() {
           </Container>
         </Alert>:<Alert variant="dark" style={{backgroundColor:"#FFFFFF", borderColor:"#FFFFFF", height: "86vh"}}>
           <Container className="vertical-center">
-            <Image src="ghost-balloon.png" rounded style={{width: "80px"}}/>
-            <h3>BOO!</h3>
+            <Image src="ghost-boo.png" rounded style={{width: "130px"}}/>
             <h6>Wallet not connected. Please connect your wallet to enjoy these goodies:</h6>
               <Row>
                 <Col>

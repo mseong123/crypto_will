@@ -1,10 +1,10 @@
 .accordion-button {
-    background-color:#f0f0f0;
+    background-color:#ffffff;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color:#036272;
-    color:white;
+    background-color:#ffffff;
+    color:black;
 }
 
 .main-container {
@@ -43,4 +43,3 @@
 [data-dapp-kit].AccountDropdownMenu_menuContent__div2ql2, [data-dapp-kit] .AccountDropdownMenu_menuContent__div2ql2 {
     width: 200px;
 }
-
