@@ -34,8 +34,8 @@ export function SendRequestForRecord({trusteeResponse}) {
 
     if (response.error) return <Alert>Error: {response.error.message}</Alert>
 
-    if (response.data.data.length === 0) return null
-    console.log("ms", response)
+    if (response.data.data.length === 0) return <Alert>No Actions needed</Alert>
+    
 
     const Request = () =>{
         const requestCards = response.data.data.map((data,index)=>{
