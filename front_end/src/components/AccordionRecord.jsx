@@ -6,6 +6,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 let count = 0;
+
 export function AccordionRecord({encryptionPhrase, response}) {
     console.log(response)
 

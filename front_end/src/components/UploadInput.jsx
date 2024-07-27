@@ -62,8 +62,8 @@ export function UploadInput({encryptionPhrase, response, category}) {
                         </Button>
                     </Col>
                 </Row>
-                {loading? <Alert className="mt-3" variant="info">Uploading...</Alert>:null}
-                {error? <Alert className="mt-3" variant="warning">{error}</Alert>:null}
+                {loading? <Alert className="mt-3" variant="dark">Uploading...</Alert>:null}
+                {error? <Alert className="mt-3" variant="dark">{error}</Alert>:null}
             </Form> 
         </Container>
     )

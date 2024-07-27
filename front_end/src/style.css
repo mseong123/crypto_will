@@ -62,5 +62,19 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-  }
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: black;
+}
   
+.page-link {
+    color: #757575;
+}
+
+.page-link:focus, .page-link:hover, .pagination{
+    color: black;
+    border: #9e9e9e;
+}

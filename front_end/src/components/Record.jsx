@@ -31,13 +31,13 @@ export function Record({encryptionPhrase,response, fields,index}) {
                 <Card.Body>
                     <Row>
                         <Col>
-                            <Card.Text className="d-inline-block float-left">
-                                <span style={{fontWeight:500, float: "left"}}>{Date(fields.timestamp[index]).toString()}</span>
+                            <Card.Text className="d-inline-block float-left me-3">
+                                <h6 style={{fontWeight:500, float: "left"}}>{Date(fields.timestamp[index]).toString()}</h6>
                             </Card.Text>
-                            <Card.Text className="d-inline-block me-3">
+                            <Card.Text className="d-inline-block float-left me-3">
                                 Title: <span style={{fontWeight:500}}>{fields.description[index]}</span>
                             </Card.Text>
-                            <Card.Text className="d-inline-block me-3">
+                            <Card.Text className="d-inline-block float-left me-3">
                                 Filename: <span style={{fontWeight:500}}>{fields.filename[index]}</span>
                             </Card.Text>
                         </Col>
