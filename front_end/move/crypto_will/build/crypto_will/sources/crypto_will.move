@@ -78,7 +78,7 @@ module crypto_will::crypto_will {
         obj.filename.remove(index);
         obj.timestamp.remove(index);
     }
-
+    
     public fun addTrustee(obj:&mut Record, trusteeAddress:address, trusteeDescription:String, testator_alias:String, timestamp:String, ctx: &mut TxContext) {
         obj.trustee.push_back(trusteeAddress);
         obj.trusteeDescription.push_back(trusteeDescription);
