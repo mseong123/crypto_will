@@ -62,7 +62,7 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
 
     return (
       <>
-            <ComponentToRender/>
+          <ComponentToRender/>
       </>
        
     )

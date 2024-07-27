@@ -17,8 +17,9 @@ export function CreateTrustee({account, response}) {
 
     return (
         <Card>
-            <Card.Header>Nominate Trustee</Card.Header>
             <Card.Body>
+                <Card.Title>Nominate Trustee</Card.Title>
+                <hr/>
                 <Form onSubmit={async (e)=>{
                     e.preventDefault();
                     setError(null);
