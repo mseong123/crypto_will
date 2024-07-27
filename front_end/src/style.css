@@ -78,3 +78,31 @@
     color: black;
     border: #9e9e9e;
 }
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+  }
+  
+  .tooltip-text {
+    visibility: visible;
+    width: 220px;
+    background-color: #eeeeee;
+    color: black;
+    text-align: center;
+    border-radius: 5px;
+    border: solid #757575;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the text */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip-container:hover .tooltip-text {
+    opacity: 1;
+  }
