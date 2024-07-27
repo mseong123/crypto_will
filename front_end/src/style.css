@@ -6,3 +6,16 @@
     background-color:#036272;
     color:white;
 }
+
+.main-container {
+    /* background-color: #eeeeee; */
+    max-width: 700px;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }

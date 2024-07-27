@@ -21,7 +21,7 @@ export function NavBar ({setPage}) {
                             <div onClick={()=>setPage("Trustee")} style={{cursor:"pointer"}}>Trustee</div>
                         </Nav.Link>
                     </Nav>
-                    <ConnectButton style={{backgroundColor:"turquoise"}}/>
+                    <ConnectButton style={{backgroundColor:"#ffffff"}}/>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
