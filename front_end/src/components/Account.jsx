@@ -40,10 +40,10 @@ export function Account ({encryptionPhrase}) {
     return (
       <>
         {encryptionPhrase? 
-        (<Container style={{padding: "0px"}}>
-          <Row>
+        (<Container style={{padding: "0px"}} className="record-container">
+          <Row style={{paddingTop: "10px"}}>
             <Col style={{paddingRight: "0px"}}><Image src="ghost-head.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
-            <Col><h5 className="mb-3" style={{float: "left", padding: "10px", paddingLeft: "0px"}}>Record</h5></Col>
+            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Record</h5></Col>
           </Row>
           <AccordionRecord encryptionPhrase={encryptionPhrase} response={response}/>
         </Container>

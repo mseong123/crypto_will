@@ -43,3 +43,16 @@
 [data-dapp-kit].AccountDropdownMenu_menuContent__div2ql2, [data-dapp-kit] .AccountDropdownMenu_menuContent__div2ql2 {
     width: 200px;
 }
+
+.record-container {
+    padding: 10px;
+    background: white;
+    border: solid #d1d1d1;
+    border-radius: 5px;
+    height: 55vh;
+    border-width: thin;
+}
+
+.nav-tabs .nav-link {
+    color: #757575;
+}

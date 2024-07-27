@@ -10,6 +10,7 @@ import { useSignature } from "../hooks/useSignature";
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 export function UploadInput({encryptionPhrase, response, category}) {
     const [loading, setLoading] = useState(false)
@@ -33,25 +34,34 @@ export function UploadInput({encryptionPhrase, response, category}) {
                 }
             }} 
             >
-                <Form.Group className="mb-3" controlId={category + "_description"}>
-                    <Row>
-                        <Col><Form.Label style={{float: "left", width: "70px"}}>Title:</Form.Label></Col>
-                        <Col><Form.Control
-                            as="textarea"
-                            size="sm"
-                        /></Col>
-                    </Row>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId={category + "_file"}>
-                    <Form.Control
-                        type="file"
-                        size="sm"
-                        required={true}
-                    />
-                </Form.Group>
-                <Button type="submit">
-                    Upload
-                </Button>
+                <Row>
+                    <Col>
+                        <Container>
+                            <Form.Group className="mb-3" controlId={category + "_description"}>
+                                <Row>
+                                    <Col className="col-6 col-md-2"><Form.Label style={{float: "left"}}>Title:</Form.Label></Col>
+                                    <Col style={{width: "550px", float: "left",}}><Form.Control
+                                        as="textarea"
+                                        size="sm"
+                                        style={{ height: "1vh"}}
+                                    /></Col>
+                                </Row>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId={category + "_file"}>
+                                <Form.Control
+                                    type="file"
+                                    size="sm"
+                                    required={true}
+                                />
+                            </Form.Group>
+                        </Container>
+                    </Col>
+                    <Col style={{paddingTop: "20px"}}>
+                        <Button type="submit">
+                            <Image src="add.png" rounded style={{width: "25px"}}/>
+                        </Button>
+                    </Col>
+                </Row>
                 {loading? <Alert className="mt-3" variant="info">Uploading...</Alert>:null}
                 {error? <Alert className="mt-3" variant="warning">{error}</Alert>:null}
             </Form> 

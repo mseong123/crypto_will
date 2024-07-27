@@ -2,6 +2,9 @@ import Accordion from 'react-bootstrap/Accordion';
 import { UploadInput} from './UploadInput';
 import { Record} from './Record';
 import { useState } from 'react'
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+
 let count = 0;
 export function AccordionRecord({encryptionPhrase, response}) {
     console.log(response)
@@ -30,40 +33,28 @@ export function AccordionRecord({encryptionPhrase, response}) {
     
     return (
         <>
-            <Accordion className="mb-4">
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Will</Accordion.Header>
-                    <Accordion.Body>
-                        {WillRecords}
-                        <hr/>
-                        <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                    <Accordion.Header>Asset</Accordion.Header>
-                    <Accordion.Body>
-                        {AssetRecords}
-                        <hr/>
-                        <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Asset"></UploadInput>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="2">
-                    <Accordion.Header>Video</Accordion.Header>
-                    <Accordion.Body>
-                        {VideoRecords}
-                        <hr/>
-                        <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Video"></UploadInput>
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="3">
-                    <Accordion.Header>Personal Documents</Accordion.Header>
-                    <Accordion.Body>
-                        {PersonalRecords}
-                        <hr/>
-                        <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Personal"></UploadInput>
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+             <Tabs
+                defaultActiveKey="profile"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+                >
+                <Tab eventKey="0" title="Will">
+                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
+                    {WillRecords}
+                </Tab>
+                <Tab eventKey="1" title="Asset">
+                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Asset"></UploadInput>
+                    {AssetRecords}
+                </Tab>
+                <Tab eventKey="2" title="Video">
+                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Video"></UploadInput>
+                    {VideoRecords}
+                </Tab>
+                <Tab eventKey="3" title="Documents">
+                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Personal"></UploadInput>
+                    {PersonalRecords}
+                </Tab>
+            </Tabs>
         </>
 
     )
