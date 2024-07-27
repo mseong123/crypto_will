@@ -5,6 +5,7 @@ import { useObjectQuery } from "../hooks/useObjectQuery"
 import { CreateAccount } from "./CreateAccount"
 import { useNetworkVariable } from "../networkConfig"
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import { DisplayTrusteeRecord } from "./DisplayTrusteeRecord"
 
 export function TrusteeSummary() {
     const packageId = useNetworkVariable('packageId');
@@ -49,6 +50,8 @@ export function TrusteeSummary() {
                     <Card.Text><span style={{fontWeight:500}}>Address: </span>{data.data.content.fields.owner}</Card.Text>
                     <Card.Text className="d-inline-block me-2"><span style={{fontWeight:500}}>Account Alias: </span>{data.data.content.fields.testator_alias}</Card.Text>
                     <Card.Text className="d-inline-block"><span style={{fontWeight:500}}>Timestamp: </span>{Date(data.data.content.fields.timestamp).toString()}</Card.Text>
+                    <hr/>
+                    <DisplayTrusteeRecord address={data.data.content.fields.owner}/>
                 </Card.Body>
             </Card>
             )
