@@ -1,89 +1,113 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useEffect, useState, useContext, ReactNode } from 'react';
 
-export interface AuthState {
-  isAuthenticated: boolean;
-  token: string | null;
-  user: any | null;
-  userSpecificData: UserSpecificData | null;
+export enum AuthState {
+  NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
+  OAUTH = 'OAUTH',
+  ZK = 'ZK',
+  WALLET = 'WALLET',
 }
 
-export interface UserSpecificData {
-  maxEpoch: number;
-  privateKey: string;
-  randomness: string;
-  nonce: string;
+interface AuthContextType {
+  authState: AuthState;
+  jwt?: string;
+  userSpecificData?: Record<string, any>;
+  zkLoginSignature?: string;
+  zkLoginAddress?: string;
+  ephemeralSecretKey?: string;
+  walletAccount?: string;
+  logout: () => void;
+  setJwt: (jwt: string) => void;
+  setUserSpecificData: (data: Record<string, any>) => void;
+  setZkLoginSignature: (signature: string) => void;
+  setZkLoginAddress: (address: string) => void;
+  setEphemeralSecretKey: (key: string) => void;
+  setWalletAccount: (account: string) => void;
+  setAuthState: (state: AuthState) => void;
 }
 
-export const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
-  user: null,
-	userSpecificData: null,
-};
-
-interface AuthPayload {
-	token: string;
-	user: any;
-	userSpecificData: UserSpecificData;
-}
-
-interface Action {
-	type: 'LOGIN' | 'LOGOUT';
-	payload: AuthPayload | null;
-}
-
-function authReducer(state: AuthState, action: Action): AuthState {
-  switch (action.type) {
-    case 'LOGIN':
-      return {
-        isAuthenticated: true,
-        token: action.payload.token,
-        user: action.payload.user,
-		userSpecificData: action.payload.userSpecificData,
-      };
-    case 'LOGOUT':
-      return initialState;
-    default:
-      return state;
-  }
-}
-
-const AuthContext = createContext<{
-  state: AuthState;
-  dispatch: React.Dispatch<Action>;
-}>({
-  state: initialState,
-  dispatch: () => undefined,
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [authState, setAuthState] = useState<AuthState>(AuthState.NOT_AUTHENTICATED);
+  const [jwt, setJwt] = useState<string | undefined>(undefined);
+  const [userSpecificData, setUserSpecificData] = useState<Record<string, any> | undefined>(undefined);
+  const [zkLoginSignature, setZkLoginSignature] = useState<string | undefined>(undefined);
+  const [zkLoginAddress, setZkLoginAddress] = useState<string | undefined>(undefined);
+  const [ephemeralSecretKey, setEphemeralSecretKey] = useState<string | undefined>(undefined);
+  const [walletAccount, setWalletAccount] = useState<string | undefined>(undefined);
 
-  // Load state from sessionStorage
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    const user = sessionStorage.getItem('user');
-    if (token && user) {
-      dispatch({ type: 'LOGIN', payload: { token, user: JSON.parse(user) } });
+    const storedAuthState = sessionStorage.getItem('authState') as AuthState | null;
+	console.log(storedAuthState)
+    const storedJwt = sessionStorage.getItem('jwt');
+    const storedUserSpecificData = sessionStorage.getItem('userSpecificData');
+    const storedZkLoginSignature = sessionStorage.getItem('zkLoginSignature');
+    const storedZkLoginAddress = sessionStorage.getItem('zkLoginAddress');
+    const storedEphemeralSecretKey = sessionStorage.getItem('ephemeralSecretKey');
+    const storedWalletAccount = sessionStorage.getItem('walletAccount');
+
+    if (storedAuthState) {
+      setAuthState(storedAuthState);
+      if (storedAuthState === AuthState.OAUTH) {
+        setJwt(storedJwt ?? undefined);
+        setUserSpecificData(storedUserSpecificData ? JSON.parse(storedUserSpecificData) : undefined);
+      } else if (storedAuthState === AuthState.ZK) {
+        setZkLoginSignature(storedZkLoginSignature ?? undefined);
+        setZkLoginAddress(storedZkLoginAddress ?? undefined);
+        setEphemeralSecretKey(storedEphemeralSecretKey ?? undefined);
+      } 
     }
   }, []);
 
-  // Save state to sessionStorage
+  const logout = () => {
+    sessionStorage.clear();
+    setAuthState(AuthState.NOT_AUTHENTICATED);
+    setJwt(undefined);
+    setUserSpecificData(undefined);
+    setZkLoginSignature(undefined);
+    setZkLoginAddress(undefined);
+    setEphemeralSecretKey(undefined);
+  };
+
   useEffect(() => {
-    if (state.token) {
-      sessionStorage.setItem('token', state.token);
-      sessionStorage.setItem('user', JSON.stringify(state.user));
-    } else {
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('user');
-    }
-  }, [state.token, state.user]);
+    sessionStorage.setItem('authState', authState);
+    // if (authState === AuthState.OAUTH) {
+    //   sessionStorage.setItem('jwt', jwt ?? '');
+    //   sessionStorage.setItem('userSpecificData', JSON.stringify(userSpecificData ?? {}));
+    // } else if (authState === AuthState.ZK) {
+    //   sessionStorage.setItem('zkLoginSignature', zkLoginSignature ?? '');
+    //   sessionStorage.setItem('zkLoginAddress', zkLoginAddress ?? '');
+    //   sessionStorage.setItem('ephemeralSecretKey', ephemeralSecretKey ?? '');
+    // } 
+  }, [authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount]);
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{
+      authState,
+      jwt,
+      userSpecificData,
+      zkLoginSignature,
+      zkLoginAddress,
+      ephemeralSecretKey,
+      walletAccount,
+      logout,
+      setJwt,
+      setUserSpecificData,
+      setZkLoginSignature,
+      setZkLoginAddress,
+      setEphemeralSecretKey,
+      setAuthState,
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+

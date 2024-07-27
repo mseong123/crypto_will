@@ -10,19 +10,20 @@ import App from "./App.jsx";
 import { AuthProvider } from "./components/AuthContext";
 import { networkConfig } from "./networkConfig.ts";
 import './style.css'
+import { ZkProvider } from "./components/ZkProvider.tsx";
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <SuiClientProvider networks={networkConfig} defaultNetwork="devnet">
-          <WalletProvider autoConnect>
-			<AuthProvider>
-				<App/>
-			</AuthProvider>
-          </WalletProvider>
-        </SuiClientProvider>
-      </QueryClientProvider>
-  </React.StrictMode>,
+	<React.StrictMode>
+		<QueryClientProvider client={queryClient}>
+			<SuiClientProvider networks={networkConfig} defaultNetwork="devnet">
+				<WalletProvider autoConnect>
+						<AuthProvider>
+							<App />
+						</AuthProvider>
+				</WalletProvider>
+			</SuiClientProvider>
+		</QueryClientProvider>
+	</React.StrictMode>,
 );

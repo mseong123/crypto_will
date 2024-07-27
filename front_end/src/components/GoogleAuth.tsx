@@ -10,7 +10,7 @@ import {
 	genAddressSeed,
 	getZkLoginSignature,
 } from '@mysten/zklogin';
-import { initialState, UserSpecificData } from './AuthContext';
+// import { AuthProvider, AuthState, initialState, UserSpecificData } from './AuthContext';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI } from '../constants';
@@ -20,10 +20,12 @@ import {
 	encodeSuiPrivateKey,
 } from "@mysten/sui/cryptography";
 
-import { useAuth } from './AuthContext';
-import { useSuiClient } from '@mysten/dapp-kit';
+import { useAuth, AuthState } from './AuthContext';
+import { useCurrentAccount, useSuiClient } from '@mysten/dapp-kit';
 import * as base64js from 'base64-js';
 import { Transaction } from '@mysten/sui/transactions';
+import { useOAuth } from './OAuthProvider';
+import { useZk } from './ZkProvider';
 
 // interface JwtPayload {
 // 	iss?: string;
@@ -72,24 +74,50 @@ function generateUserSalt(sub: string) {
 
 
 export function GoogleAuth() {
-
-	const { state, dispatch } = useAuth();
-	const [loading, setLoading] = useState(false);
-
-
-	const [userSpecificData, setUserSpecificData] = useState<UserSpecificData | null>(null);
-	const [encodedJWT, setEncodedJWT] = useState<string | null>(null);
-
-	// const suiClient = useSuiClient();
+	// const { authState, setAuthState, logout } = useAuth();
+	// const [token, setToken] = useState<string | null>(null);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [code, setCode] = useState<string | null>(null);
 	//
+	// const [jwt, setJwt] = useState<string | null>(null);
+	// const [userSpecificData, setUserSpecificData] = useState<any>(null);
+	// const [zkLoginSignature, setZkLoginSignature] = useState<string | null>(null);
+	// const [zkLoginAddress, setZkLoginAddress] = useState<string | null>(null);
+	// const [ephemeralSecretKey, setEphemeralSecretKey] = useState<string | null>(null);
+	// const [walletAccount, setWalletAccount] = useState<any>(null);
+
+	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, } = useAuth();
+
+	// useEffect(() => {
+	// 	switch (authState) {
+	// 		case AuthState.NOT_AUTHENTICATED:
+	// 			console.log('User is not authenticated');
+	// 			break;
+	// 		case AuthState.OAUTH:
+	// 			const { jwt: oauthJwt, userSpecificData: oauthUserSpecificData, setJwt: oauthSetJwt, setUserSpecificData: oauthSetUserSpecificData } = useOAuth();
+	// 			setJwt(oauthJwt);
+	// 			setUserSpecificData(oauthUserSpecificData);
+	// 			break;
+	// 		case AuthState.ZK:
+	// 			const { zkLoginSignature: zkSig, zkLoginAddress: zkAddr, ephemeralSecretKey: zkKey } = useZk();
+	// 			setZkLoginSignature(zkSig);
+	// 			setZkLoginAddress(zkAddr);
+	// 			setEphemeralSecretKey(zkKey);
+	// 			break;
+	// 		case AuthState.WALLET:
+	// 			const walletAccount = useCurrentAccount();
+	// 			setWalletAccount(walletAccount);
+	// 			break;
+	// 		default:
+	// 			console.log('Unknown authentication state');
+	// 	}
+	// }, [authState]);
+
+	const [loading, setLoading] = useState(false);
 	const rpcUrl = getFullnodeUrl('devnet');
 	const suiClient = new SuiClient({ url: rpcUrl });
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-
-		console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID)
-		console.log(import.meta.env.VITE_GOOGLE_CLIENT_SECRET)
-		console.log(import.meta.env.VITE_REDIRECT_URI)
 		const code = urlParams.get('code');
 
 		if (code) {
@@ -98,7 +126,6 @@ export function GoogleAuth() {
 			if (usd_string) {
 				usd = JSON.parse(usd_string);
 			}
-			console.log("usd", usd)
 			const fetchToken = async () => {
 				try {
 					const tokenResponse = await axios.post(
@@ -119,24 +146,20 @@ export function GoogleAuth() {
 					);
 
 					const { id_token } = tokenResponse.data;
-					console.log("id", id_token)
-
 					if (id_token && usd) {
-						console.log("here")
 						const decodedJwt = jwtDecode(id_token) as JwtPayload;
-						console.log(decodedJwt)
-						dispatch({ type: 'LOGIN', payload: { token: id_token, user: decodedJwt, userSpecificData: usd } });
-						setEncodedJWT(id_token)
-						setUserSpecificData(usd)
 						try {
 							if (!decodedJwt.sub) {
 								throw new Error("Missing sub in payload");
 							}
 							const userSaltString: string = decodedJwt.sub;
-							const userSalt= generateUserSalt(userSaltString);
+							const userSalt = generateUserSalt(userSaltString);
 							const zkLoginUserAddress = jwtToAddress(id_token, userSalt);
-							console.log("ADDRESS", zkLoginUserAddress);
+							sessionStorage.setItem('zkLoginAddress', zkLoginUserAddress)
+							setZkLoginAddress(zkLoginUserAddress)
 							const ephemeralKeyPair = await createKeypairFromBech32(usd.privateKey);
+							sessionStorage.setItem('ephemeralSecretKey', usd.privateKey)
+							setEphemeralSecretKey(usd.privateKey)
 
 							const extendedEphemeralPublicKey = getExtendedEphemeralPublicKey(
 								ephemeralKeyPair.getPublicKey(),
@@ -144,34 +167,22 @@ export function GoogleAuth() {
 
 							const prover_url = "https://prover-dev.mystenlabs.com/v1";
 
-							// const encodedPK = base64js.toByteArray(extendedEphemeralPublicKey)
-							// const encodedRandom = base64js.toByteArray(usd.randomness)
-							console.log("jwt", id_token);
-							console.log("extendedEphemeralPublicKey", extendedEphemeralPublicKey);
-							console.log("epoch", usd.maxEpoch);
-							console.log("random", usd.randomness);
-							console.log("salt", userSalt);
 							const maxEpoch = usd.maxEpoch;
 							const payload = {
 								jwt: id_token as string,
-								// extendedEphemeralPublicKey: encodedPK as string,
 								extendedEphemeralPublicKey: extendedEphemeralPublicKey,
 								maxEpoch: maxEpoch as string,
 								jwtRandomness: usd.randomness as string,
-								// jwtRandomness: encodedRandom,
-								// salt: base64js.fromByteArray(userSalt),
 								salt: userSalt,
 								keyClaimName: "sub",
 							};
-
-							// console.log(payload);
 
 							const proofResponse = await axios.post(prover_url, JSON.stringify(payload), {
 								headers: { "Content-Type": "application/json" },
 							});
 							const proof = proofResponse.data;
 
-							console.log("response", proofResponse);
+							console.log(proof)
 							const partialZkLoginSignature = proof as PartialZkLoginSignature;
 							const txb = new Transaction();
 							const [coin] = txb.splitCoins(txb.gas, [MIST_PER_SUI * 1n])
@@ -195,10 +206,14 @@ export function GoogleAuth() {
 								maxEpoch,
 								userSignature,
 							})
+							sessionStorage.setItem('zkLoginSignature', zkLoginSignature);
+							setZkLoginSignature(zkLoginSignature)
+
 							suiClient.executeTransactionBlock({
 								transactionBlock: bytes,
 								signature: zkLoginSignature,
 							});
+							setIsAuthenticated(true);
 							console.log("SUCCESSS BITCH")
 
 						} catch (err) {
@@ -212,13 +227,15 @@ export function GoogleAuth() {
 
 			fetchToken();
 			// console.log("decoded jwt", state)
+			sessionStorage.setItem('authState', AuthState.ZK)
+			setAuthState(AuthState.ZK)
 		}
-	}, [dispatch]);
+	}, [code]);
 
 	async function getMaxEpoch(suiClient: SuiClient): Promise<number | null> {
 		try {
 			const { epoch } = await suiClient.getLatestSuiSystemState();
-			console.log(epoch);
+			console.log(epoch)
 			return (Number(epoch) + 10); // this means the ephemeral key will be active for 2 epochs from now.
 		} catch (e) {
 			console.error("error trying to get epoch", e)
@@ -268,30 +285,21 @@ export function GoogleAuth() {
 		const userSpecificData = await generateUserSpecificData(suiClient);
 		setUserSpecificData(userSpecificData);
 		sessionStorage.setItem('userSpecificData', JSON.stringify(userSpecificData));
-		// dispatch({ type: 'LOGIN', payload: { token: "", user: null, userSpecificData: userSpecificData } });
-		setLoading(true);
-		console.log("nonce", userSpecificData.nonce);
 		const AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&scope=openid email profile&nonce=${userSpecificData.nonce}`;
 		window.location.href = AUTH_URL;
 	};
 
-	const logout = () => {
-		sessionStorage.clear();
-		dispatch({ type: "LOGOUT", payload: null })
-
-	}
-
 	return (
 		<div>
 			<h1>Google Authentication with zkLogin</h1>
-			{state.isAuthenticated ? (
+			{isAuthenticated && zkLoginAddress && ephemeralSecretKey ? (
 				<>
 					<button onClick={logout} style={{ color: 'black' }}>
 						Logout
 					</button>
 					<div>
-						<p>JWT: {state.token}</p>
-						<p>User Specific Data: {JSON.stringify(state.userSpecificData, null, 2)}</p>
+						<p>Address: {zkLoginAddress}</p>
+						<p>PK: {ephemeralSecretKey}</p>
 					</div>
 				</>
 			) : (

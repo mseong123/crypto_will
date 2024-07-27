@@ -36,6 +36,7 @@ const suiClient = new SuiClient({ url: FULLNODE_URL });
 
 async function getMaxEpoch(): Promise<number> {
   const { epoch } = await suiClient.getLatestSuiSystemState();
+	console.log(epoch)
   return Number(epoch) + 2; // this means the ephemeral key will be active for 2 epochs from now.
 }
 
@@ -52,9 +53,6 @@ async function generateUserSpecificData(): Promise<UserSpecificData> {
   const ephemeralKeyPair = new Ed25519Keypair();
   const privateKey = ephemeralKeyPair.getSecretKey();
   const publicKey = ephemeralKeyPair.getPublicKey();
-  console.log("BEFORE------------------------------------------");
-  console.log(privateKey, "|");
-  console.log(publicKey);
   const randomness = generateRandomness();
 	console.log(randomness)
   const nonce = generateNonce(
