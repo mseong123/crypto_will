@@ -23,7 +23,7 @@ export function WalletStatus() {
           </Container>
         </Alert>:<Alert variant="dark" style={{backgroundColor:"#FFFFFF", borderColor:"#FFFFFF", height: "86vh"}}>
           <Container className="vertical-center">
-            <Image src="ghost-boo.png" rounded style={{width: "130px"}}/>
+            <Image className="center" src="ghost-boo.png" rounded style={{width: "130px"}}/>
             <h6>Wallet not connected. Please connect your wallet to enjoy these goodies:</h6>
               <Row>
                 <Col>

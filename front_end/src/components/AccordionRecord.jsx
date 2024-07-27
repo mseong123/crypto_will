@@ -34,11 +34,11 @@ export function AccordionRecord({encryptionPhrase, response}) {
     return (
         <>
              <Tabs
-                defaultActiveKey="profile"
+                defaultActiveKey="0"
                 id="uncontrolled-tab-example"
                 className="mb-3"
                 >
-                <Tab eventKey="0" title="Will">
+                <Tab eventKey="0" title="Will" >
                     <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
                     {WillRecords}
                 </Tab>

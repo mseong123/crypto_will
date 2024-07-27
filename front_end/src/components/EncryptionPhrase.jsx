@@ -21,7 +21,7 @@ export function EncryptionPhrase({encryptionPhrase, setEncryptionPhrase}) {
             {!encryptionPhrase? (
             <>
                 <h4>Account</h4>
-                <Image src="hello-ghost.png" rounded style={{width: "100px"}}/>
+                <Image className="center" src="hello-ghost.png" rounded style={{width: "100px"}}/>
                 <Card.Title>Please enter encryption phrase</Card.Title>
                 <hr></hr>
                 <Card.Text>
@@ -29,13 +29,13 @@ export function EncryptionPhrase({encryptionPhrase, setEncryptionPhrase}) {
                 Please use a memorable and unique passphrase <span style={{color:"black", fontWeight:"bold"}}>(your wallet's private key is a good example)</span>
                 </Card.Text>
                 
-            </>):<Container>
+            </>):<Container style={{paddingLeft: "0px"}}>
                     <Row>
-                        <Col><h6 style={{padding: "10px", float: "right"}}>Encryption phrase:</h6></Col>
+                        <Col className="col-md-3"><h6 style={{paddingTop: "10px", float: "left"}}>Encryption phrase:</h6></Col>
                         <Col>{isTextVisible && (
-                            <p style={{padding: "10px", float: "left", marginBottom: "0px"}}>{encryptionPhrase}</p>
+                            <p style={{paddingTop: "10px", float: "left", marginBottom: "0px"}}>{encryptionPhrase}</p>
                         )}</Col>
-                        <Col><Button onClick={toggleTextVisibility}>
+                        <Col className="col-md-2"><Button onClick={toggleTextVisibility} style={{float: "right"}}>
                             {isTextVisible ? <Image src="eye.png" rounded style={{width: "20px"}}/> : <Image src="eyehide.png" rounded style={{width: "20px"}}/>}
                         </Button></Col>
                     </Row>
