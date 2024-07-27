@@ -1,6 +1,6 @@
 import { Transaction } from "@mysten/sui/transactions";
 
-export function updateAccount(category, description, encryptedCID, filename, response, packageID, signAndExecute, setLoading) {
+export function updateAccount(category, description, encryptedCID, filename, response, packageID, signAndExecute, setLoading, id_description, id_file) {
     const tx = new Transaction();
     console.log(response.data.data[0].data.objectId)
     tx.moveCall({
@@ -15,6 +15,9 @@ export function updateAccount(category, description, encryptedCID, filename, res
       {
         onSuccess: (result) => {
           setLoading(false)
+          
+          document.getElementById(id_description).value = ""
+          document.getElementById(id_file).value = ""
           response.refetch();
 
         },
