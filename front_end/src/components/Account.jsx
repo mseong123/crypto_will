@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Image from 'react-bootstrap/Image';
 
 export function Account ({encryptionPhrase,setEncryptionPhrase}) {
     const packageId = useNetworkVariable('packageId');
@@ -37,12 +38,13 @@ export function Account ({encryptionPhrase,setEncryptionPhrase}) {
 
     return (
         <div>
-            <h4>Account</h4>
             <Card className="mb-3">
               <Card.Body>
               {!encryptionPhrase? (
                 <>
-                  <Card.Title>Please enter Encryption Phrase</Card.Title>
+                  <h4>Account</h4>
+                  <Image src="hello-ghost.png" rounded style={{width: "100px"}}/>
+                  <Card.Title>Please enter encryption phrase</Card.Title>
                   <hr></hr>
                   <Card.Text>
                     Encryption Phrase is used to encrypt, view and manage your files on the blockchain to ensure confidentiality and security of your data.
