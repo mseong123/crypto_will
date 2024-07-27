@@ -7,8 +7,12 @@ import { useNetworkVariable } from "../networkConfig"
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { sendTrusteeRecord } from "../utils/sendTrusteeRecord";
 import { useSignature } from "../hooks/useSignature";
+import { decryptAES } from "../utils/encryptionAES"
+import { useState, useEffect } from 'react'
 
-export function ListTrustee({accountResponse, trusteeResponse}) {
+export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}) {
+    const [error, setError]= useState(null)
+    const [loading, setLoading]= useState(false);
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
     const signAndExecute = useSignature();
@@ -25,10 +29,12 @@ export function ListTrustee({accountResponse, trusteeResponse}) {
       }
     );
 
-    function handleTransfer(objectID) {
+    function handleTransfer(objectID, publicKey) {
         const category = accountResponse.data.data[0].data.content.fields.category;
         const description = accountResponse.data.data[0].data.content.fields.description;
-        const encryptedCID = accountResponse.data.data[0].data.content.fields.encryptedCID;
+        const accountEncryptedCID = accountResponse.data.data[0].data.content.fields.encryptedCID;
+        const accountDecryptedCID = decryptAES(encryptionPhrase,fields.encryptedCID, setError);
+        const decrypted = decryptAES(encryptionPhrase,fields.encryptedCID, setError);
         const filename = accountResponse.data.data[0].data.content.fields.filename;
         const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
         sendTrusteeRecord(response, objectID, category, description, encryptedCID, filename, timestamp, packageId, signAndExecute)
