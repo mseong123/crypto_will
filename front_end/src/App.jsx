@@ -16,7 +16,11 @@ function App() {
     <Container data-bs-theme={theme}>
         <NavBar setPage={setPage}/>
         <WalletStatus/>
-        {currentAccount? page === "Account"? <Account encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null : null}
+        {currentAccount? page === "Account"? (
+          <>
+            <Account encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>
+          </>:null
+         ) : null}
         
     </Container>
     
