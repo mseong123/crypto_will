@@ -52,7 +52,7 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
           <h3 className="mb-3">Account Action</h3>
           <CreateTrustee account={account} response={response}/>
           <hr/>
-          <ListTrustee response={response}/>
+          <ListTrustee trusteeResponse={response}/>
       </>)
     
     if (page === "Record")

@@ -27,7 +27,10 @@ export function CreateTrustee({account, response}) {
                     const trusteeAddress = document.getElementById("trusteeAddress").value
                     const trusteeDescription = document.getElementById("trusteeDescription").value
                     const testatorAlias = document.getElementById("testatorAlias").value
-                    createTrustee(response, trusteeAddress, trusteeDescription, testatorAlias, packageId, signAndExecute, setLoading, "trusteeAddress", "trusteeDescription", "testatorAlias")
+                    if (response.data.data[0].data.content.fields.trustee.includes(trusteeAddress))
+                        setError("Nominee is already your trustee. Use a different address")
+                    else 
+                        createTrustee(response, trusteeAddress, trusteeDescription, testatorAlias, packageId, signAndExecute, setLoading, "trusteeAddress", "trusteeDescription", "testatorAlias")
                 }} 
                 >
                     <Form.Group className="d-inline-block mx-2" controlId={"trusteeAddress"}>
