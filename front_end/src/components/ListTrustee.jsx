@@ -5,10 +5,13 @@ import { useObjectQuery } from "../hooks/useObjectQuery"
 import { CreateAccount } from "./CreateAccount"
 import { useNetworkVariable } from "../networkConfig"
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import { sendTrusteeRecord } from "../utils/sendTrusteeRecord";
+import { useSignature } from "../hooks/useSignature";
 
-export function ListTrustee({trusteeResponse}) {
+export function ListTrustee({accountResponse, trusteeResponse}) {
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
+    const signAndExecute = useSignature();
 	const response = useObjectQuery(
       'getOwnedObjects',
       {
@@ -21,6 +24,15 @@ export function ListTrustee({trusteeResponse}) {
       {
       }
     );
+
+    function handleTransfer(objectID) {
+        const category = accountResponse.data.data[0].data.content.fields.category;
+        const description = accountResponse.data.data[0].data.content.fields.description;
+        const encryptedCID = accountResponse.data.data[0].data.content.fields.encryptedCID;
+        const filename = accountResponse.data.data[0].data.content.fields.filename;
+        const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
+        sendTrusteeRecord(objectID, category, description, encryptedCID, filename, timestamp, packageId, signAndExecute)
+    }
    
     function matchPublicKey(address) {
         let match
@@ -28,10 +40,10 @@ export function ListTrustee({trusteeResponse}) {
             match = response.data.data.filter(data=> 
                  data.data.content.fields.trusteeAddress === address)
         }
-        
+        console.log(match)
         return (
             <>
-                {match && match.length>0?<Button >Send Trustee Records</Button>:null}
+                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId)} >Send Trustee Records</Button>:null}
             </>
         )
     }
