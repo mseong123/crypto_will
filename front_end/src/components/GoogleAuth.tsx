@@ -246,7 +246,6 @@ export function GoogleAuth() {
 
 	return (
 		<div>
-			<h1>Google Authentication with zkLogin</h1>
 			{isAuthenticated && zkLoginAddress && ephemeralSecretKey ? (
 				<>
 					<button onClick={logout} style={{ color: 'black' }}>

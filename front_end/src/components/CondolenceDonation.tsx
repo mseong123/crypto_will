@@ -25,7 +25,7 @@ export function CondolenceDonation({ }) {
 	const [loading, setLoading] = useState(false);
 	const [result, setResult] = useState<string | null>(null);
 
-	async function sendSui(zkLoginAddress, ephemeralSecretKey, amount ) {
+	async function sendSui(zkLoginAddress, ephemeralSecretKey, amount) {
 		console.log("running")
 		const rpcUrl = getFullnodeUrl("devnet");
 		const suiClient = new SuiClient({ url: rpcUrl });
@@ -51,11 +51,11 @@ export function CondolenceDonation({ }) {
 		const addressSeed = seed;
 
 		// const partialZkLoginSignature = parseZkLoginSignature()
-		console.log("partial",partialZkLoginSignature)
-		console.log("seed",addressSeed)
-		console.log("epoch",maxEpoch)
+		console.log("partial", partialZkLoginSignature)
+		console.log("seed", addressSeed)
+		console.log("epoch", maxEpoch)
 		const { bytes, signature: userSignature } = await txb.sign({ client: suiClient, signer: ephemeralKeyPair });
-		console.log("sign",userSignature)
+		console.log("sign", userSignature)
 		const newzkLoginSignature = getZkLoginSignature({
 			inputs: {
 				...partialZkLoginSignature,
@@ -110,6 +110,23 @@ export function CondolenceDonation({ }) {
 								</Button>
 							</Form>
 						</Card.Body>
+
+						{result && (
+							<div style={{
+								position: 'absolute',
+								top: '-30px',
+								left: '50%',
+								transform: 'translateX(-50%)',
+								backgroundColor: '#eeeeee',
+								color: 'black',
+								padding: '5px 10px',
+								borderRadius: '5px',
+								width: '200px',
+								zIndex: 1,
+							}}>
+								{result}
+							</div>
+						)}
 					</Card>
 				</Card.Body>
 			</Card>
