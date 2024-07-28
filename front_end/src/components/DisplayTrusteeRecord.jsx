@@ -109,7 +109,7 @@ export function DisplayTrusteeRecord({address}) {
                     </Card.Body>
                 </Card>
                 {!decrypted? <Form onSubmit={(e)=>{e.preventDefault();
-                console.log(match[0].data.content.fields.encryptedCID)
+                
                     let decryptedCID = match[0].data.content.fields.encryptedCID.map(CID=>{
                         return decryptAES(document.getElementById("decryptionPhrase").value, CID, setError)
                     })
