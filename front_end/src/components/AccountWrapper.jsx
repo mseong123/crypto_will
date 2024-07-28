@@ -11,6 +11,11 @@ import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
+import Image from 'react-bootstrap/Image';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     const packageId = useNetworkVariable('packageId');
@@ -29,9 +34,9 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     );
     let ComponentToRender;
     
-    if (response.isPending) return <Alert>Loading...</Alert>;
+    if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
-    if (response.error) return <Alert>Error: {response.error.message}</Alert>
+    if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
       
     if (response.data.data.length === 0) {setAccountExist(false); return <CreateAccount refetch={response.refetch}/>}
     if (response.data.data.length !== 0) setAccountExist(true)
@@ -39,21 +44,26 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     const RecordComponent = ()=>
       (<>
           {encryptionPhrase? 
-          (<>
-            <h3 className="mb-3">Record</h3>
+          (<Container style={{padding: "0px", height: "100%"}} className="record-container">
+            <Row style={{paddingTop: "10px"}}>
+              <Col style={{paddingRight: "0px"}}><Image src="ghost-head.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+              <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Record</h5></Col>
+            </Row>
             <AccordionRecord encryptionPhrase={encryptionPhrase} response={response}/>
-            </>
+          </Container>
           ):null
           }
       </>)
 
     const AccountActionComponent = ()=>
-      (<>
-          <h3 className="mb-3">Account Action</h3>
+      (<Container style={{padding: "0px", height: "100%"}} className="record-container">
+          <Row style={{paddingTop: "10px"}}>
+            <Col style={{paddingRight: "0px"}}><Image src="ghost-angel.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Account Action</h5></Col>
+          </Row>
           <CreateTrustee account={account} response={response}/>
-          <hr/>
           <ListTrustee encryptionPhrase={encryptionPhrase} accountResponse={response} trusteeResponse={response}/>
-      </>)
+      </Container>)
     
     if (page === "Record")
       ComponentToRender = RecordComponent;

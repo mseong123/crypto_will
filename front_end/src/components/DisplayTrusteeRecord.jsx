@@ -10,6 +10,12 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { decryptAES } from '../utils/encryptionAES';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 export function DisplayTrusteeRecord({address}) {
     const [loading, setLoading] = useState(false)
@@ -32,9 +38,9 @@ export function DisplayTrusteeRecord({address}) {
         }
       );
       
-      if (response.isPending) return <Alert>Loading...</Alert>;
+      if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
   
-      if (response.error) return <Alert>Error: {response.error.message}</Alert>
+      if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
 
       function groupItemsByCategory(category) {
         if (category.length > 1)
@@ -86,28 +92,29 @@ export function DisplayTrusteeRecord({address}) {
         <>
         {match && match.length>0? (
             <>
-                {decrypted?<h5>Decrypted Records</h5>:<h5>Unencrypted Records</h5>}
-                <Card className="mb-2">
-                    <Card.Body>
-                        <Card.Title>File</Card.Title>
+                <hr/>
+                {decrypted?<h6 style={{fontWeight: "bold", margin: "20px"}}>Decrypted Records</h6>:<h6 style={{fontWeight: "bold"}}>Unencrypted records</h6>}
+                <Tabs
+                    defaultActiveKey="0"
+                    id="uncontrolled-tab-example"
+                    className="mb-3"
+                >
+                    <Tab eventKey="0" title="File" >
                         {WillCard}
-                    </Card.Body>
+                    </Tab>
                     <hr className="my-1"/>
-                    <Card.Body>
-                        <Card.Title>Asset</Card.Title>
+                    <Tab eventKey="1" title="Asset">
                         {AssetCard}
-                    </Card.Body>
+                    </Tab>
                     <hr className="my-1"/>
-                    <Card.Body>
-                        <Card.Title>Video</Card.Title>
+                    <Tab eventKey="2" title="Video">
                         {VideoCard}
-                    </Card.Body>
+                    </Tab>
                     <hr className="my-1"/>
-                    <Card.Body>
-                        <Card.Title>Personal</Card.Title>
+                    <Tab eventKey="3" title="Personal">
                         {PersonalCard}
-                    </Card.Body>
-                </Card>
+                    </Tab>
+                </Tabs>
                 {!decrypted? <Form onSubmit={(e)=>{e.preventDefault();
                 
                     let decryptedCID = match[0].data.content.fields.encryptedCID.map(CID=>{
@@ -116,7 +123,8 @@ export function DisplayTrusteeRecord({address}) {
                     setDecryptedCID(decryptedCID);
                     setDecrypted(true);
                     document.getElementById("decryptionPhrase").value = ""}}>
-                    <Form.Group className="d-inline-block mx-2" controlId={"decryptionPhrase"}>
+                    <hr/>
+                    <Form.Group className="d-inline-block m-2" controlId={"decryptionPhrase"}>
                         <Form.Label>Enter Encryption Phrase</Form.Label>
                         <Form.Control
                             type="text"
@@ -133,3 +141,4 @@ export function DisplayTrusteeRecord({address}) {
         </>
     )
 }
+

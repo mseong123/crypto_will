@@ -36,7 +36,7 @@ export function NavBar ({setPage}) {
 							<span onClick={()=>setPage("CondolenceDonation")} style={{cursor:"pointer"}}>Condolence Donation</span>
 						</Nav.Link>
                     </Nav>
-                    <ConnectButton style={{backgroundColor:"turquoise"}}/>
+                    <ConnectButton style={{backgroundColor:"#ffffff"}}/>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

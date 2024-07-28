@@ -31,7 +31,7 @@ function App() {
       {accountExist && page==="Record"? <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null}
       <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
   </>)
- 
+
   const TrusteeSummaryComponent = ()=>
     (<>
         <TrusteeSummary/>
@@ -40,7 +40,7 @@ function App() {
     (<>
         <TrusteeAction/>
     </>)
-	const CondolenceDonationComponent = () => 
+	const CondolenceDonationComponent = () =>
     (<>
         <CondolenceDonation/>
     </>)
@@ -53,15 +53,17 @@ function App() {
     ComponentToRender = TrusteeActionComponent;
   else if (page === "CondolenceDonation")
     ComponentToRender = CondolenceDonationComponent;
-  
+
   return (
-    <Container>
+
+
+    <Container className="main-container">
         <NavBar setPage={setPage}/>
         <WalletStatus/>
         {currentAccount || ComponentToRender === CondolenceDonationComponent? <ComponentToRender/>: null}
-        
+
     </Container>
-    
+
   );
 }
 

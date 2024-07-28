@@ -9,6 +9,10 @@ import { sendTrusteeRecord } from "../utils/sendTrusteeRecord";
 import { useSignature } from "../hooks/useSignature";
 import { decryptAES,encryptAES } from "../utils/encryptionAES"
 import { useState, useEffect } from 'react'
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}) {
     const [error, setError]= useState(null)
@@ -49,7 +53,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         
         return (
             <>
-                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId, match[0].data.content.fields.publicKey)} >Send Trustee Records</Button>:null}
+                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId, match[0].data.content.fields.publicKey)} >Send trustee records</Button>:null}
             </>
         )
     }
@@ -57,24 +61,28 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
     const TrusteeList = () =>{
         const trusteeCards = trusteeResponse.data.data[0].data.content.fields.trustee.map((data,index)=>{
         return (
-            <Card key={index} className="mb-2">
-                <Card.Body>
-                    <Card.Text><span style={{fontWeight:500}}>Address: </span>{data}</Card.Text>
-                    <Card.Text className="d-inline-block me-2"><span style={{fontWeight:500}}>Trustee Description: </span>{trusteeResponse.data.data[0].data.content.fields.trusteeDescription[index]}</Card.Text>
-                    <Card.Text className="d-inline-block"><span style={{fontWeight:500}}>Timestamp: </span>{Date(trusteeResponse.data.data[0].data.content.fields.trusteeTimestamp[index]).toString()}</Card.Text>
-                    {matchPublicKey(data)}
-                    {error? <Alert>{"Incorrect passphrase. Can't decrypt File to be sent to Trustee"}</Alert>:null}
-                </Card.Body>
-            </Card>
+            <Container>
+                <Card key={index} className="mb-2 mx-2">
+                    <Card.Body style={{color: "rgb(96, 96, 96)"}}>
+                        <Row><Col className='col-md-1'><Image src="home.png" rounded style={{width: "25px"}}/></Col>
+                        <Col><h6 style={{float: "left"}}>{data}</h6></Col></Row>
+                        <Row><Col className='col-md-1'><Image src="calendar.png" rounded style={{width: "25px"}}/></Col>
+                        <Col><h6 style={{ float: "left", marginTop: "6px"}}>{Date(trusteeResponse.data.data[0].data.content.fields.trusteeTimestamp[index]).toString()}</h6></Col></Row>
+                        <Row><Col className='col-md-1'><Image src="approve.png" rounded style={{width: "25px"}}/></Col>
+                        <Col><h6 style={{ float: "left", marginTop: "6px"}}>{trusteeResponse.data.data[0].data.content.fields.trusteeDescription[index]}</h6></Col></Row>
+                        {matchPublicKey(data)}
+                        {error? <Alert style={{backgroundColor: "white"}} variant='dark'>{"Incorrect passphrase. Can't decrypt File to be sent to Trustee"}</Alert>:null}
+                    </Card.Body>
+                </Card>
+            </Container>
             )
         })
         return <>{trusteeCards}</>;
     }
 
-
     return (
         <>
-            <h4>Trustee Nominies for your Account</h4>
+            <h6 style={{fontWeight: "bold"}}>Trustee Nominies for your Account</h6>
             <TrusteeList/>
         </>
     )
