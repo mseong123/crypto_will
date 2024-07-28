@@ -53,7 +53,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         
         return (
             <>
-                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId, match[0].data.content.fields.publicKey)} >Send Trustee Records</Button>:null}
+                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId, match[0].data.content.fields.publicKey)} >Send trustee records</Button>:null}
             </>
         )
     }
