@@ -30,11 +30,11 @@ export function SendRequestForRecord({trusteeResponse}) {
       }
     );
     
-    if (response.isPending) return <Alert>Loading...</Alert>;
+    if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
-    if (response.error) return <Alert>Error: {response.error.message}</Alert>
+    if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
 
-    if (response.data.data.length === 0) return <Alert>No Actions needed</Alert>
+    if (response.data.data.length === 0) return <Alert style={{backgroundColor: "white"}} variant='dark'>No actions needed</Alert>
     
 
     const Request = () =>{
@@ -70,8 +70,8 @@ export function SendRequestForRecord({trusteeResponse}) {
                         <Button type="submit">
                             Request
                         </Button>
-                        {loading? <Alert className="mt-3" variant="info">Uploading...</Alert>:null}
-                        {error? <Alert className="mt-3" variant="warning">{error}</Alert>:null}
+                        {loading? <Alert className="mt-3" variant="dark">Uploading...</Alert>:null}
+                        {error? <Alert className="mt-3" variant="dark">{error}</Alert>:null}
                     </Form> 
                 </Card.Body>
             </Card>

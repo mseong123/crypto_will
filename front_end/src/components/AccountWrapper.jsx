@@ -34,9 +34,9 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     );
     let ComponentToRender;
     
-    if (response.isPending) return <Alert>Loading...</Alert>;
+    if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
-    if (response.error) return <Alert>Error: {response.error.message}</Alert>
+    if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
       
     if (response.data.data.length === 0) {setAccountExist(false); return <CreateAccount refetch={response.refetch}/>}
     if (response.data.data.length !== 0) setAccountExist(true)

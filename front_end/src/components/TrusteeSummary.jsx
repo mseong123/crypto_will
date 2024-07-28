@@ -27,15 +27,18 @@ export function TrusteeSummary() {
       }
     );
     
-    if (response.isPending) return <Alert>Loading...</Alert>;
+    if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
-    if (response.error) return <Alert>Error: {response.error.message}</Alert>
+    if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
       
     if (response.data.data.length === 0) {
         return (
-            <>
-                <h4>Trustee Summary</h4>
-                <Card>
+            <Container style={{padding: "0px", height: "100%"}} className="record-container">
+                <Row style={{paddingTop: "10px"}}>
+                    <Col className="" style={{paddingRight: "0px"}}><Image src="ghost-love.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+                    <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Trustee Summary</h5></Col>
+                </Row>
+                <Card className="mb-2 mx-2">
                     <Card.Body>
                         <Card.Title>Not a Trustee</Card.Title>
                         <Card.Text>
@@ -43,7 +46,9 @@ export function TrusteeSummary() {
                         </Card.Text>
                     </Card.Body>
                 </Card>
-            </>
+            </Container>
+
+
         )
     }
     const TrusteeList = () =>{
