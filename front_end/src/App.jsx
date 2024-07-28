@@ -1,8 +1,7 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { WalletStatus } from "./WalletStatus";
 import { useState } from "react"
-import { Account } from "./components/Account";
-import { AccountAction } from "./components/AccountAction";
+import { AccountWrapper } from "./components/AccountWrapper";
 import { TrusteeSummary } from "./components/TrusteeSummary";
 import { TrusteeAction } from "./components/TrusteeAction";
 import { NavBar } from "./components/NavBar";
@@ -11,20 +10,17 @@ import { EncryptionPhrase } from "./components/EncryptionPhrase";
 
 function App() {
   const currentAccount = useCurrentAccount();
+  const [accountExist, setAccountExist] = useState(false)
+  const [accountState, setAccountState] = useState(false)
   const [page, setPage] = useState("Record")
-  const [theme, setTheme] = useState("light")
   const [encryptionPhrase,setEncryptionPhrase] = useState("");
   let ComponentToRender;
-  const RecordComponent = ()=>
+  const AccountWrapperComponent = ()=>
   (<>
-      <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>
-      <Account encryptionPhrase={encryptionPhrase}/>
+      {accountExist && page==="Record"? <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null}
+      <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
   </>)
-  const AccountActionComponent = ()=>
-    (<>
-        <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>
-        <AccountAction/>
-    </>)
+ 
   const TrusteeSummaryComponent = ()=>
     (<>
         <TrusteeSummary/>
@@ -34,17 +30,17 @@ function App() {
         <TrusteeAction/>
     </>)
 
-  if (page === "Record")
-    ComponentToRender = RecordComponent;
-  else if (page === "AccountAction")
-    ComponentToRender = AccountActionComponent;
+  if (page === "Record" || page === "AccountAction")
+    ComponentToRender = AccountWrapperComponent;
   else if (page === "TrusteeSummary")
     ComponentToRender = TrusteeSummaryComponent;
   else if (page === "TrusteeAction")
     ComponentToRender = TrusteeActionComponent;
   
   return (
-    <Container data-bs-theme={theme} className="main-container" >
+
+
+    <Container className="main-container">
         <NavBar setPage={setPage}/>
         <WalletStatus/>
         {currentAccount? <ComponentToRender/>: null}

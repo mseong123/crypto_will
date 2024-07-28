@@ -23,7 +23,7 @@ export function Record({encryptionPhrase,response, fields,index}) {
     }
     const signAndExecute = useSignature();
     const packageId = useNetworkVariable('packageId');
-    
+
 
     return (
         <Container>

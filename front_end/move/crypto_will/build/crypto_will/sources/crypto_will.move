@@ -39,13 +39,16 @@ module crypto_will::crypto_will {
     public struct TrusteeCap has key {
         id:UID,
         testatorAddress:address,
+        testatorAlias:String,
+        trusteeDescription:String
     }
 
     public struct PublicKeyCap has key {
         id:UID,
         publicKey:String,
         trusteeAddress:address,
-        testatorAlias:String
+        testatorAlias:String,
+        trusteeDescription:String
     }
 
     public fun new(ctx: &mut TxContext) {
@@ -78,7 +81,7 @@ module crypto_will::crypto_will {
         obj.filename.remove(index);
         obj.timestamp.remove(index);
     }
-
+    
     public fun addTrustee(obj:&mut Record, trusteeAddress:address, trusteeDescription:String, testator_alias:String, timestamp:String, ctx: &mut TxContext) {
         obj.trustee.push_back(trusteeAddress);
         obj.trusteeDescription.push_back(trusteeDescription);
@@ -86,7 +89,7 @@ module crypto_will::crypto_will {
 
         transfer::transfer(Trustee {
             id: object::new(ctx),
-            owner:trusteeAddress,
+            owner:ctx.sender(),
             testator_alias:testator_alias,
             timestamp:timestamp
         }, trusteeAddress);
@@ -94,28 +97,31 @@ module crypto_will::crypto_will {
         transfer::transfer(TrusteeCap {
             id:object::new(ctx),
             testatorAddress:ctx.sender(),
+            testatorAlias:testator_alias,
+            trusteeDescription:trusteeDescription
             }, trusteeAddress);
     }
 
-    public fun sendPublicKeyCap(cap:TrusteeCap, publicKey:String, trusteeAddress:address, testatorAlias:String, ctx: &mut TxContext) {
-        let TrusteeCap { id, testatorAddress } = cap;
+    public fun sendPublicKeyCap(cap:TrusteeCap, publicKey:String, trusteeAddress:address, ctx: &mut TxContext) {
+        let TrusteeCap { id, testatorAddress, testatorAlias, trusteeDescription } = cap;
         id.delete();
         transfer::transfer(PublicKeyCap {
             id:object::new(ctx),
             publicKey:publicKey,
             trusteeAddress:trusteeAddress,
-            testatorAlias:testatorAlias
+            testatorAlias:testatorAlias,
+            trusteeDescription:trusteeDescription,
         }, testatorAddress);
 
     }
 
     public fun transferRecord(cap:PublicKeyCap,category:vector<String>,description:vector<String>,encryptedCID:vector<String>,filename:vector<String>,timestamp:vector<String>,ctx: &mut TxContext){
-        let PublicKeyCap { id, publicKey, trusteeAddress, testatorAlias } = cap;
+        let PublicKeyCap { id, publicKey, trusteeAddress, testatorAlias, trusteeDescription } = cap;
         id.delete();
         transfer::transfer({
             TrusteeRecord {
                 id:object::new(ctx),
-                testatorAddress:trusteeAddress,
+                testatorAddress:ctx.sender(),
                 testatorAlias:testatorAlias,
                 category:category,
                 description:description,
