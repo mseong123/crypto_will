@@ -7,7 +7,7 @@ import { useNetworkVariable } from "../networkConfig"
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { sendTrusteeRecord } from "../utils/sendTrusteeRecord";
 import { useSignature } from "../hooks/useSignature";
-import { decryptAES } from "../utils/encryptionAES"
+import { decryptAES,encryptAES } from "../utils/encryptionAES"
 import { useState, useEffect } from 'react'
 
 export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}) {
@@ -33,11 +33,11 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         const category = accountResponse.data.data[0].data.content.fields.category;
         const description = accountResponse.data.data[0].data.content.fields.description;
         const accountEncryptedCID = accountResponse.data.data[0].data.content.fields.encryptedCID;
-        const accountDecryptedCID = decryptAES(encryptionPhrase,fields.encryptedCID, setError);
-        const decrypted = decryptAES(encryptionPhrase,fields.encryptedCID, setError);
+        const accountDecryptedCID = accountEncryptedCID.map(CID=>decryptAES(encryptionPhrase,CID, setError));
+        const trusteeEncryptedCID = accountDecryptedCID.map(CID=>encryptAES(publicKey,CID))
         const filename = accountResponse.data.data[0].data.content.fields.filename;
         const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
-        sendTrusteeRecord(response, objectID, category, description, encryptedCID, filename, timestamp, packageId, signAndExecute)
+        sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute)
     }
    
     function matchPublicKey(address) {
@@ -49,7 +49,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         
         return (
             <>
-                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId)} >Send Trustee Records</Button>:null}
+                {match && match.length>0?<Button onClick={()=>handleTransfer(match[0].data.objectId, match[0].data.content.fields.publicKey)} >Send Trustee Records</Button>:null}
             </>
         )
     }
@@ -63,6 +63,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
                     <Card.Text className="d-inline-block me-2"><span style={{fontWeight:500}}>Trustee Description: </span>{trusteeResponse.data.data[0].data.content.fields.trusteeDescription[index]}</Card.Text>
                     <Card.Text className="d-inline-block"><span style={{fontWeight:500}}>Timestamp: </span>{Date(trusteeResponse.data.data[0].data.content.fields.trusteeTimestamp[index]).toString()}</Card.Text>
                     {matchPublicKey(data)}
+                    {error? <Alert>{"Incorrect passphrase. Can't decrypt File to be sent to Trustee"}</Alert>:null}
                 </Card.Body>
             </Card>
             )
