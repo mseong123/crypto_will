@@ -24,12 +24,12 @@ export function WalletStatus() {
 
   return (
     <>
-      {account?
+      {account || authState === AuthState.ZK?
         <Alert variant="dark" style={{overflowWrap: "break-word", borderColor: "#d1d1d1", backgroundColor:"#ffffff", color:"#606060"}}>
           <Container>
             <Row>
               <Col style={{paddingRight: "0px", padding: "10px"}}>Address:</Col>
-              <Col style={{padding: "10px", paddingLeft: "0px"}}>{account.address}</Col>
+              <Col style={{padding: "10px", paddingLeft: "0px"}}>{account ? account.address : zkLoginAddress}</Col>
               <Col style={{width: "28px", padding: "0px"}}><CopyTextButton/></Col>
             </Row>
           </Container>
