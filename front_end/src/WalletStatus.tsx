@@ -1,5 +1,8 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import Alert from 'react-bootstrap/Alert';
+import { AuthState, useAuth } from "./components/AuthContext";
+import { useEffect, useState } from "react";
+import { useZk } from "./components/ZkProvider";
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -8,16 +11,25 @@ import Row from 'react-bootstrap/Row';
 import CopyTextButton from './components/CopyTextButton';
 
 export function WalletStatus() {
-  const account = useCurrentAccount();
+	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, } = useAuth();
+	// const [zkLoginSignature, setZkLoginSignature] = useState<string | undefined>(undefined);
+	// const [zkLoginAddress, setZkLoginAddress] = useState<string | undefined>(undefined);
+	// const [ephemeralSecretKey, setEphemeralSecretKey] = useState<string | undefined>(undefined);
+	const account = useCurrentAccount();
+
+	useEffect(() => {
+		console.log("auth", authState)
+	}, [authState])
+
 
   return (
     <>
-      {account?
+      {account || authState === AuthState.ZK?
         <Alert variant="dark" style={{overflowWrap: "break-word", borderColor: "#d1d1d1", backgroundColor:"#ffffff", color:"#606060"}}>
           <Container>
             <Row>
               <Col style={{paddingRight: "0px", padding: "10px"}}>Address:</Col>
-              <Col style={{padding: "10px", paddingLeft: "0px"}}>{account.address}</Col>
+              <Col style={{padding: "10px", paddingLeft: "0px"}}>{account ? account.address : zkLoginAddress}</Col>
               <Col style={{width: "28px", padding: "0px"}}><CopyTextButton/></Col>
             </Row>
           </Container>

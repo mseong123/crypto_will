@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
 export function NavBar ({setPage}) {
+
     return (
         <Navbar expand="md" className="bg-body-tertiary">
             <Container>
@@ -31,6 +32,9 @@ export function NavBar ({setPage}) {
                                 <span onClick={()=>setPage("TrusteeAction")} style={{cursor:"pointer"}}>Trustee Action</span>
                             </NavDropdown.Item>
                         </NavDropdown>
+						<Nav.Link>
+							<span onClick={()=>setPage("CondolenceDonation")} style={{cursor:"pointer"}}>Condolence Donation</span>
+						</Nav.Link>
                     </Nav>
                     <ConnectButton style={{backgroundColor:"#ffffff"}}/>
                 </Navbar.Collapse>
