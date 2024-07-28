@@ -12,8 +12,8 @@ export function WalletStatus() {
 	const account = useCurrentAccount();
 
 	useEffect(() => {
-		console.log(authState)
-	}, [])
+		console.log("auth", authState)
+	}, [authState])
 
 
 	return (

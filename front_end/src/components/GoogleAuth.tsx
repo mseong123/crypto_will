@@ -21,35 +21,30 @@ import {
 } from "@mysten/sui/cryptography";
 
 import { useAuth, AuthState } from './AuthContext';
-import { useCurrentAccount, useSuiClient } from '@mysten/dapp-kit';
-import * as base64js from 'base64-js';
 import { Transaction } from '@mysten/sui/transactions';
-import { useOAuth } from './OAuthProvider';
-import { useZk } from './ZkProvider';
-
-// interface JwtPayload {
-// 	iss?: string;
-// 	sub?: string; // Subject ID
-// 	aud?: string[] | string;
-// 	exp?: number;
-// 	nbf?: number;
-// 	iat?: number;
-// 	jti?: string;
-// }
-
-
-// function generateUserSalt(sub: string) {
-// 	const hash = crypto.createHash("sha256");
-// 	hash.update(sub);
-// 	const hashed = hash.digest();
-// 	return hashed.subarray(0, 16);
-// }
 export type PartialZkLoginSignature = Omit<
 	Parameters<typeof getZkLoginSignature>['0']['inputs'],
 	'addressSeed'
 >;
 
 export const MIST_PER_SUI = 1000000000n;
+
+export async function createKeypairFromBech32(
+	bech32SecretKey: string,
+): Promise<Ed25519Keypair> {
+	try {
+		// Decode the Bech32 string
+		// const decoded = bech32.decode(bech32SecretKey);
+		const { schema, secretKey } = decodeSuiPrivateKey(bech32SecretKey);
+		// Convert the decoded words back to a Uint8Array
+		// const decodedUint8Array = new Uint8Array(bech32.fromWords(decoded.words));
+		return Ed25519Keypair.fromSecretKey(secretKey);
+	} catch (error) {
+		console.error("Error creating keypair from Bech32:", error);
+		throw error;
+	}
+}
+
 
 function generateUserSalt(sub: string) {
 	const hash = CryptoJS.SHA256(sub);
@@ -78,42 +73,10 @@ export function GoogleAuth() {
 	// const [token, setToken] = useState<string | null>(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [code, setCode] = useState<string | null>(null);
-	//
-	// const [jwt, setJwt] = useState<string | null>(null);
-	// const [userSpecificData, setUserSpecificData] = useState<any>(null);
-	// const [zkLoginSignature, setZkLoginSignature] = useState<string | null>(null);
-	// const [zkLoginAddress, setZkLoginAddress] = useState<string | null>(null);
-	// const [ephemeralSecretKey, setEphemeralSecretKey] = useState<string | null>(null);
-	// const [walletAccount, setWalletAccount] = useState<any>(null);
 
-	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, } = useAuth();
+	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, proof, setProof, seed, setSeed} = useAuth();
 
-	// useEffect(() => {
-	// 	switch (authState) {
-	// 		case AuthState.NOT_AUTHENTICATED:
-	// 			console.log('User is not authenticated');
-	// 			break;
-	// 		case AuthState.OAUTH:
-	// 			const { jwt: oauthJwt, userSpecificData: oauthUserSpecificData, setJwt: oauthSetJwt, setUserSpecificData: oauthSetUserSpecificData } = useOAuth();
-	// 			setJwt(oauthJwt);
-	// 			setUserSpecificData(oauthUserSpecificData);
-	// 			break;
-	// 		case AuthState.ZK:
-	// 			const { zkLoginSignature: zkSig, zkLoginAddress: zkAddr, ephemeralSecretKey: zkKey } = useZk();
-	// 			setZkLoginSignature(zkSig);
-	// 			setZkLoginAddress(zkAddr);
-	// 			setEphemeralSecretKey(zkKey);
-	// 			break;
-	// 		case AuthState.WALLET:
-	// 			const walletAccount = useCurrentAccount();
-	// 			setWalletAccount(walletAccount);
-	// 			break;
-	// 		default:
-	// 			console.log('Unknown authentication state');
-	// 	}
-	// }, [authState]);
 
-	const [loading, setLoading] = useState(false);
 	const rpcUrl = getFullnodeUrl('devnet');
 	const suiClient = new SuiClient({ url: rpcUrl });
 	useEffect(() => {
@@ -146,6 +109,8 @@ export function GoogleAuth() {
 					);
 
 					const { id_token } = tokenResponse.data;
+					setJwt(id_token)
+					sessionStorage.setItem("jwt", id_token)
 					if (id_token && usd) {
 						const decodedJwt = jwtDecode(id_token) as JwtPayload;
 						try {
@@ -181,6 +146,10 @@ export function GoogleAuth() {
 								headers: { "Content-Type": "application/json" },
 							});
 							const proof = proofResponse.data;
+							const proofString =JSON.stringify(proof);
+							setProof(proofString);
+							sessionStorage.setItem("proof", proofString);
+
 
 							console.log(proof)
 							const partialZkLoginSignature = proof as PartialZkLoginSignature;
@@ -198,6 +167,8 @@ export function GoogleAuth() {
 								throw new Error("Aud missing")
 							}
 							const addressSeed: string = genAddressSeed(BigInt(userSalt!), "sub", decodedJwt.sub, decodedJwt.aud.toString()).toString();
+							setSeed(addressSeed);
+							sessionStorage.setItem('seed', addressSeed)
 							const zkLoginSignature = getZkLoginSignature({
 								inputs: {
 									...partialZkLoginSignature,
@@ -226,11 +197,11 @@ export function GoogleAuth() {
 			};
 
 			fetchToken();
-			// console.log("decoded jwt", state)
-			sessionStorage.setItem('authState', AuthState.ZK)
+			setIsAuthenticated(true)
 			setAuthState(AuthState.ZK)
+			// console.log("decoded jwt", state)
 		}
-	}, [code]);
+	}, []);
 
 	async function getMaxEpoch(suiClient: SuiClient): Promise<number | null> {
 		try {
@@ -240,22 +211,6 @@ export function GoogleAuth() {
 		} catch (e) {
 			console.error("error trying to get epoch", e)
 			return null;
-		}
-	}
-
-	async function createKeypairFromBech32(
-		bech32SecretKey: string,
-	): Promise<Ed25519Keypair> {
-		try {
-			// Decode the Bech32 string
-			// const decoded = bech32.decode(bech32SecretKey);
-			const { schema, secretKey } = decodeSuiPrivateKey(bech32SecretKey);
-			// Convert the decoded words back to a Uint8Array
-			// const decodedUint8Array = new Uint8Array(bech32.fromWords(decoded.words));
-			return Ed25519Keypair.fromSecretKey(secretKey);
-		} catch (error) {
-			console.error("Error creating keypair from Bech32:", error);
-			throw error;
 		}
 	}
 
@@ -297,10 +252,6 @@ export function GoogleAuth() {
 					<button onClick={logout} style={{ color: 'black' }}>
 						Logout
 					</button>
-					<div>
-						<p>Address: {zkLoginAddress}</p>
-						<p>PK: {ephemeralSecretKey}</p>
-					</div>
 				</>
 			) : (
 				<button onClick={googleAuth} style={{ color: 'black' }}>
