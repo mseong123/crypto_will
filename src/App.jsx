@@ -44,6 +44,7 @@ function App() {
   </>)
   const RecordUploadComponent = ()=>
     (<>
+        {accountExist && page==="RecordUpload"? <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null}
         <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
     </>)
 

@@ -67,8 +67,10 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
       </Container>)
 
   const RecordUploadComponent = ()=>
-  (
-    <UploadInput encryptionPhrase={encryptionPhrase} response={response}/>
+  (<>
+      {encryptionPhrase? 
+        <UploadInput encryptionPhrase={encryptionPhrase} response={response}/>:null}
+    </>
   )
     
     if (page === "Record")
