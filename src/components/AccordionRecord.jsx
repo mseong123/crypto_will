@@ -42,21 +42,15 @@ export function AccordionRecord({encryptionPhrase, response}) {
                 >
                 <Tab eventKey="0" title="Will" >
                     {WillRecords.length > 0? WillRecords: <p>No Files uploaded yet for this Category</p>}
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
                 </Tab>
                 <Tab eventKey="1" title="Asset">
                     {AssetRecords.length > 0? AssetRecords: <p>No Files uploaded yet for this Category</p>}
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Asset"></UploadInput>
-                    
                 </Tab>
                 <Tab eventKey="2" title="Video">
                     {VideoRecords.length > 0? VideoRecords: <p>No Files uploaded yet for this Category</p>}
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Video"></UploadInput>
                 </Tab>
                 <Tab eventKey="3" title="Documents">
                     {PersonalRecords.length > 0? PersonalRecords: <p>No Files uploaded yet for this Category</p>} 
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Personal"></UploadInput>
-                    
                 </Tab>
             </Tabs>
         </>

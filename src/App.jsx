@@ -42,6 +42,10 @@ function App() {
   (<>
       <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
   </>)
+  const RecordUploadComponent = ()=>
+    (<>
+        <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
+    </>)
 
   const TrusteeSummaryComponent = ()=>
     (<>
@@ -62,6 +66,8 @@ function App() {
     ComponentToRender = RecordComponent;
   else if (page === "RecordAction")
     ComponentToRender = RecordActionComponent;
+  else if (page === "RecordUpload")
+    ComponentToRender = RecordUploadComponent;
   else if (page === "TrusteeSummary")
     ComponentToRender = TrusteeSummaryComponent;
   else if (page === "TrusteeAction")

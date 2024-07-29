@@ -6,6 +6,7 @@ import { encryptAES } from "../utils/encryptionAES"
 import { encryptAssym } from "../utils/encryptionAssym"
 import { AccordionRecord } from './AccordionRecord';
 import { CreateTrustee } from './CreateTrustee';
+import { UploadInput } from './UploadInput';
 import { ListTrustee } from './ListTrustee';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
@@ -64,17 +65,21 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
           <CreateTrustee account={account} response={response}/>
           <ListTrustee encryptionPhrase={encryptionPhrase} accountResponse={response} trusteeResponse={response}/>
       </Container>)
+
+  const RecordUploadComponent = ()=>
+  (
+    <UploadInput encryptionPhrase={encryptionPhrase} response={response}/>
+  )
     
     if (page === "Record")
       ComponentToRender = RecordComponent;
     else if (page === "RecordAction")
       ComponentToRender = RecordActionComponent;
+    else if (page === "RecordUpload")
+      ComponentToRender = RecordUploadComponent;
 
     return (
-      <>
-          <ComponentToRender/>
-      </>
-       
+      <ComponentToRender/>
     )
 }
 

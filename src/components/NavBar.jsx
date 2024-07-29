@@ -20,13 +20,14 @@ export function NavBar ({page, setPage}) {
     const RecordNavComponent = ()=>
         (<>
             <Nav.Link onClick={()=>setPage("Record")}>Record Summary</Nav.Link>
-            <Nav.Link><span onClick={()=>setPage("RecordAction")}>Action</span></Nav.Link>
+            <Nav.Link onClick={()=>setPage("RecordUpload")}>Upload</Nav.Link>
+            <Nav.Link onClick={()=>setPage("RecordAction")}>Action</Nav.Link>
         </>)
     
     const TrusteeNavComponent = ()=>
         (<>
-            <Nav.Link><span onClick={()=>setPage("TrusteeSummary")}>Trustee Summary</span></Nav.Link>
-            <Nav.Link><span onClick={()=>setPage("TrusteeAction")}>Action</span></Nav.Link>
+            <Nav.Link onClick={()=>setPage("TrusteeSummary")}>Trustee Summary</Nav.Link>
+            <Nav.Link onClick={()=>setPage("TrusteeAction")}>Action</Nav.Link>
         </>)
     
     const CondolencesDonationNavComponent = ()=>
@@ -38,8 +39,11 @@ export function NavBar ({page, setPage}) {
         ComponentToRender = SelectionNavComponent
     else if (page === "Record")
         ComponentToRender = RecordNavComponent;
+    else if (page === "RecordUpload")
+        ComponentToRender = RecordNavComponent;
     else if (page === "RecordAction")
         ComponentToRender = RecordNavComponent;
+   
     else if (page === "TrusteeSummary")
         ComponentToRender = TrusteeNavComponent;
     else if (page === "TrusteeAction")
