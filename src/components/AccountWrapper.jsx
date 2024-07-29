@@ -55,11 +55,11 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
           }
       </>)
 
-    const AccountActionComponent = ()=>
+    const RecordActionComponent = ()=>
       (<Container style={{padding: "0px", height: "100%"}} className="record-container">
           <Row style={{paddingTop: "10px"}}>
             <Col style={{paddingRight: "0px"}}><Image src="ghost-angel.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
-            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Account Action</h5></Col>
+            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Action</h5></Col>
           </Row>
           <CreateTrustee account={account} response={response}/>
           <ListTrustee encryptionPhrase={encryptionPhrase} accountResponse={response} trusteeResponse={response}/>
@@ -67,8 +67,8 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     
     if (page === "Record")
       ComponentToRender = RecordComponent;
-    else if (page === "AccountAction")
-      ComponentToRender = AccountActionComponent;
+    else if (page === "RecordAction")
+      ComponentToRender = RecordActionComponent;
 
     return (
       <>

@@ -1,6 +1,7 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { WalletStatus } from "./WalletStatus";
 import { useEffect, useState } from "react"
+import { SelectionScreen } from "./components/SelectionScreen";
 import { AccountWrapper } from "./components/AccountWrapper";
 import { TrusteeSummary } from "./components/TrusteeSummary";
 import { TrusteeAction } from "./components/TrusteeAction";
@@ -18,7 +19,8 @@ function App() {
   const [accountState, setAccountState] = useState(false)
   // const [page, setPage] = useState(currentPage)
 	const cp = sessionStorage.getItem('currentPage')
-  const [page, setPage] = useState(cp ? cp : "Record")
+  // const [page, setPage] = useState(cp ? cp : "SelectionScreen")
+  const [page, setPage] = useState("SelectionScreen")
   const [encryptionPhrase,setEncryptionPhrase] = useState("");
 	useEffect(() => {
 		sessionStorage.setItem('currentPage', page);
@@ -26,9 +28,18 @@ function App() {
 		setCurrentPage(page);
 	}, [page])
   let ComponentToRender;
-  const AccountWrapperComponent = ()=>
+
+  const SelectionScreenComponent = ()=>
+  (<SelectionScreen setPage={setPage}/>)
+
+  const RecordComponent = ()=>
   (<>
       {accountExist && page==="Record"? <EncryptionPhrase encryptionPhrase={encryptionPhrase} setEncryptionPhrase={setEncryptionPhrase}/>:null}
+      <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
+  </>)
+
+  const RecordActionComponent = ()=>
+  (<>
       <AccountWrapper page={page} setAccountExist={setAccountExist} encryptionPhrase={encryptionPhrase}/>
   </>)
 
@@ -45,8 +56,12 @@ function App() {
         <CondolenceDonation/>
     </>)
 
-  if (page === "Record" || page === "AccountAction")
-    ComponentToRender = AccountWrapperComponent;
+  if (page === "SelectionScreen")
+    ComponentToRender = SelectionScreenComponent;
+  else if (page === "Record")
+    ComponentToRender = RecordComponent;
+  else if (page === "RecordAction")
+    ComponentToRender = RecordActionComponent;
   else if (page === "TrusteeSummary")
     ComponentToRender = TrusteeSummaryComponent;
   else if (page === "TrusteeAction")
@@ -55,12 +70,10 @@ function App() {
     ComponentToRender = CondolenceDonationComponent;
 
   return (
-
-
     <Container className="main-container">
-        <NavBar setPage={setPage}/>
+        <NavBar page={page} setPage={setPage}/>
         <WalletStatus/>
-        {currentAccount || ComponentToRender === CondolenceDonationComponent? <ComponentToRender/>: null}
+        {currentAccount? <ComponentToRender/>: null}
 
     </Container>
 

@@ -13,7 +13,7 @@ export function CreateAccount({refetch}) {
   const signAndExecute = useSignature()
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card className="center w-75" >
       <Card.Body>
         <Card.Title>No Account exist</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">Account Creation</Card.Subtitle>

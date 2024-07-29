@@ -20,7 +20,6 @@ export function EncryptionPhrase({encryptionPhrase, setEncryptionPhrase}) {
             <Card.Body>
             {!encryptionPhrase? (
             <>
-                <h4>Account</h4>
                 <Image className="center" src="hello-ghost.png" rounded style={{width: "100px"}}/>
                 <Card.Title>Please enter encryption phrase</Card.Title>
                 <hr></hr>
