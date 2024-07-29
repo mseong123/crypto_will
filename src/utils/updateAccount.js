@@ -23,7 +23,6 @@ export function updateAccount(encryptedCID, response, packageID, signAndExecute,
           
           setInput([]);
           response.refetch();
-
         },
       },
     );

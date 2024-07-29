@@ -5,6 +5,7 @@ import { SelectionScreen } from "./components/SelectionScreen";
 import { AccountWrapper } from "./components/AccountWrapper";
 import { TrusteeSummary } from "./components/TrusteeSummary";
 import { TrusteeAction } from "./components/TrusteeAction";
+import { RequestDonation } from "./components/RequestDonation";
 import { CondolenceDonation } from "./components/CondolenceDonation";
 import { NavBar } from "./components/NavBar";
 import Container from 'react-bootstrap/Container';
@@ -56,6 +57,10 @@ function App() {
     (<>
         <TrusteeAction/>
     </>)
+  const RequestDonationComponent = () =>
+    (<>
+        <RequestDonation/>
+    </>)
 	const CondolenceDonationComponent = () =>
     (<>
         <CondolenceDonation/>
@@ -73,6 +78,8 @@ function App() {
     ComponentToRender = TrusteeSummaryComponent;
   else if (page === "TrusteeAction")
     ComponentToRender = TrusteeActionComponent;
+  else if (page === "RequestDonation")
+    ComponentToRender = RequestDonationComponent;
   else if (page === "CondolenceDonation")
     ComponentToRender = CondolenceDonationComponent;
 

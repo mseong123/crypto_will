@@ -1,79 +1,44 @@
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { useState } from 'react'
+import { useNetworkVariable } from "../networkConfig"
+import { useSignature } from "../hooks/useSignature";
+import { useObjectQuery } from "../hooks/useObjectQuery"
 import Alert from 'react-bootstrap/Alert';
-import { useState, useEffect } from 'react'
-import { useAuth, AuthState } from './AuthContext';
-import { Transaction } from '@mysten/sui/transactions';
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
-import { getZkLoginSignature } from '@mysten/zklogin';
-
-
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import { requestDonation } from "../utils/requestDonation"
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 export function CondolenceDonation() {
-	const [error, setError] = useState(null)
-	const [loading, setLoading] = useState(false);
-	const [result, setResult] = useState(null);
+	const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const signAndExecute = useSignature();
+    const account = useCurrentAccount();
+    const packageId = useNetworkVariable('packageId');
+    const response = useObjectQuery(
+        'getOwnedObjects',
+        {
+          owner:account.address,
+                filter:{
+                    StructType: `${packageId}::crypto_will::DonationCap`,
+                },
+          options: { showType: true, showContent: true },
+        },
+        {
+        }
+      );
+	
+	if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
-	// async function sendSui(zkLoginAddress, ephemeralSecretKey, amount) {
-	// 	console.log("running")
-	// 	const rpcUrl = getFullnodeUrl("devnet");
-	// 	const suiClient = new SuiClient({ url: rpcUrl });
-	// 	const proofObject = JSON.parse(proof)
-	// 	const partialZkLoginSignature = proofObject as PartialZkLoginSignature;
-	// 	const txb = new Transaction();
-	// 	const ephemeralKeyPair = await createKeypairFromBech32(ephemeralSecretKey)
-
-	// 	try {
-	// 		const amt = BigInt(amount);
-	// 		const [coin] = txb.splitCoins(txb.gas, [MIST_PER_SUI * amt])
-	// 		txb.setSender(zkLoginAddress);
-	// 		txb.transferObjects(
-	// 			[coin],
-	// 			// "0x6af474423e9ecd218e026616247ae4f5147957967ff0dbe612b2719209d99f86"
-	// 			"0x665f5ee73869cf9bd800b69a069bb9f2610f71ee02e29162de55b03aa042131b"
-	// 		);
-
-	// 		const usd_string = sessionStorage.getItem("userSpecificData")
-	// 		let usd = null;
-	// 		if (usd_string) {
-	// 			usd = JSON.parse(usd_string);
-	// 		}
-	// 		const maxEpoch = usd.maxEpoch
-	// 		const addressSeed = seed;
-
-	// 		// const partialZkLoginSignature = parseZkLoginSignature()
-	// 		// console.log("partial", partialZkLoginSignature)
-	// 		// console.log("seed", addressSeed)
-	// 		// console.log("epoch", maxEpoch)
-	// 		const { bytes, signature: userSignature } = await txb.sign({ client: suiClient, signer: ephemeralKeyPair });
-	// 		// console.log("sign", userSignature)
-	// 		const newzkLoginSignature = getZkLoginSignature({
-	// 			inputs: {
-	// 				...partialZkLoginSignature,
-	// 				addressSeed,
-	// 			},
-	// 			maxEpoch,
-	// 			userSignature,
-	// 		})
-	// 		// console.log("new", newzkLoginSignature)
-	// 		suiClient.executeTransactionBlock({
-	// 			transactionBlock: bytes,
-	// 			signature: newzkLoginSignature,
-	// 		});
-	// 		// suiClient.signAndExecuteTransaction({ signer: ephemeralKeyPair, transaction: txb });
-	// 		// console.log('success')
-	// 		setResult('Success');
-	// 	} catch (err) {
-	// 		console.error("error sending money", err);
-	// 		setResult('Failed');
-	// 	}
-	// }
+	if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
 
 	return (
-
 		<>
-			<Card className="mb-2">
+			{/* <Card className="mb-2">
 				<Card.Body>
 					<Card className="mb-2">
 						<Card.Header> Donation </Card.Header>
@@ -118,7 +83,10 @@ export function CondolenceDonation() {
 						)}
 					</Card>
 				</Card.Body>
-			</Card>
+			</Card> */}
+			<div>
+				condolences
+			</div>
 		</>
 	)
 

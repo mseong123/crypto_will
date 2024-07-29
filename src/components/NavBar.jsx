@@ -28,6 +28,7 @@ export function NavBar ({page, setPage}) {
         (<>
             <Nav.Link onClick={()=>setPage("TrusteeSummary")}>Trustee Summary</Nav.Link>
             <Nav.Link onClick={()=>setPage("TrusteeAction")}>Action</Nav.Link>
+            <Nav.Link onClick={()=>setPage("RequestDonation")}>Request Donation</Nav.Link>
         </>)
     
     const CondolencesDonationNavComponent = ()=>
@@ -47,6 +48,8 @@ export function NavBar ({page, setPage}) {
     else if (page === "TrusteeSummary")
         ComponentToRender = TrusteeNavComponent;
     else if (page === "TrusteeAction")
+        ComponentToRender = TrusteeNavComponent;
+    else if (page === "RequestDonation")
         ComponentToRender = TrusteeNavComponent;
     else if (page === "CondolenceDonation")
         ComponentToRender = CondolencesDonationNavComponent;
