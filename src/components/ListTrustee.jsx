@@ -77,7 +77,25 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
             </Container>
             )
         })
-        return <>{trusteeCards}</>;
+        if (trusteeCards.length > 0)
+            return <>{trusteeCards}</>;
+        else
+            return (
+                <Container style={{padding: "0px", height: "100%"}} className="record-container">
+                    <Row style={{paddingTop: "10px"}}>
+                        <Col className="" style={{paddingRight: "0px"}}><Image src="ghost-love.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+                        <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Trustee Summary</h5></Col>
+                    </Row>
+                    <Card className="mb-2 mx-2">
+                        <Card.Body>
+                            <Card.Title>Nominated Trustees</Card.Title>
+                            <Card.Text>
+                                You currently have no nominated Trustees. Please nominate one.
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Container>
+        )
     }
 
     return (

@@ -58,7 +58,7 @@ export function TrusteeSummary() {
                 <Card key={index} className="mb-2 mx-2">
                     <Card.Body style={{color: "rgb(96, 96, 96)"}}>
                         <Row><Col className='col-md-1'><Image src="home.png" rounded style={{width: "25px"}}/></Col>
-                        <Col><h6 style={{float: "left"}}>{data.data.content.fields.owner}</h6></Col></Row>
+                        <Col><h6 style={{float: "left", overflowWrap: "break-word"}}>{data.data.content.fields.owner}</h6></Col></Row>
                         <Row><Col className='col-md-1'><Image src="calendar.png" rounded style={{width: "25px"}}/></Col>
                         <Col><h6 style={{ float: "left", marginTop: "6px"}}>{Date(data.data.content.fields.timestamp).toString()}</h6></Col></Row>
                         <Row><Col className='col-md-1'><Image src="approve.png" rounded style={{width: "25px"}}/></Col>
