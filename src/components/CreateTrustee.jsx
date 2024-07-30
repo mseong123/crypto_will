@@ -48,7 +48,7 @@ export function CreateTrustee({ account, response }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				
+				response.refetch();	
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);
