@@ -17,14 +17,20 @@ import Image from 'react-bootstrap/Image';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { LogStatus, useLogin } from './UserContext';
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { useEffect, useState } from "react";
 
 export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
+  const enoki = useEnokiFlow()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+	const [ address, setAddress ] = useState(null)
 	  const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:account.address,
+        owner:address,
               filter:{
                   StructType: `${packageId}::crypto_will::Record`,
               },
@@ -33,6 +39,26 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
       {
       }
     );
+
+	// useEffect(() => {
+	// 	if (isLoggedIn === LogStatus.zk) {
+	// 		setAddress(userDetails.address)
+	// 	} else if (isLoggedIn === LogStatus.wallet) {
+	// 		setAddress(account?.address)
+	// 	} else {
+	// 		setAddress(null)
+	// 	}
+	// }, [])
+
+	useEffect(() => {
+		if (isLoggedIn === LogStatus.zk) {
+			setAddress(userDetails.address)
+		} else if (isLoggedIn === LogStatus.wallet) {
+			setAddress(account?.address)
+		} else {
+			setAddress(null)
+		}
+	}, [isLoggedIn])
     let ComponentToRender;
     
     if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;

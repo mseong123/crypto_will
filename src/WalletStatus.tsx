@@ -6,18 +6,33 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import CopyTextButton from './components/CopyTextButton';
+import { LogStatus, useLogin } from './components/UserContext';
+import { useEffect, useState } from "react";
 
 export function WalletStatus() {
+
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+	const [ address, setAddress ] = useState(null)
 	const account = useCurrentAccount();
+
+	useEffect(() => {
+		if (isLoggedIn === LogStatus.zk) {
+			setAddress(userDetails.address)
+		} else if (isLoggedIn === LogStatus.wallet) {
+			setAddress(account?.address)
+		} else {
+			setAddress(null)
+		}
+	}, [isLoggedIn])
 
 	return (
 		<>
-			{account  ?
+			{isLoggedIn !== LogStatus.loggedOut  ?
 				<Alert variant="dark" style={{ overflowWrap: "break-word", borderColor: "#d1d1d1", backgroundColor: "#ffffff", color: "#606060" }}>
 					<Container>
 						<Row>
 							<Col style={{ paddingRight: "0px", padding: "10px" }}>Address:</Col>
-							<Col style={{ padding: "10px", paddingLeft: "0px" }}>{account ? account.address : zkLoginAddress}</Col>
+							<Col style={{ padding: "10px", paddingLeft: "0px" }}>{ address }</Col>
 							<Col style={{ width: "28px", padding: "0px" }}><CopyTextButton /></Col>
 						</Row>
 					</Container>

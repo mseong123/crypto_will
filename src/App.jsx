@@ -10,10 +10,13 @@ import { CondolenceDonation } from "./components/CondolenceDonation";
 import { NavBar } from "./components/NavBar";
 import Container from 'react-bootstrap/Container';
 import { EncryptionPhrase } from "./components/EncryptionPhrase";
+import { LogStatus, useLogin } from "./components/UserContext";
 
 
 function App() {
   const currentAccount = useCurrentAccount();
+
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
   const [accountExist, setAccountExist] = useState(false)
   const [accountState, setAccountState] = useState(false)
   // const [page, setPage] = useState(currentPage)
@@ -28,9 +31,11 @@ function App() {
 	// }, [page])
   let ComponentToRender;
   useEffect(() => {
-    setEncryptionPhrase("")
+	if (isLoggedIn !== LogStatus.loggedOut) {
+		setEncryptionPhrase("")
 		setPage("SelectionScreen")
-	}, [currentAccount])
+	}
+	}, [isLoggedIn])
 
   const SelectionScreenComponent = ()=>
   (<SelectionScreen setPage={setPage}/>)
@@ -89,7 +94,7 @@ function App() {
     <Container className="main-container">
         <NavBar page={page} setPage={setPage}/>
         <WalletStatus/>
-        {currentAccount? <ComponentToRender/>: null}
+        {isLoggedIn !== LogStatus.loggedOut ? <ComponentToRender/>: null}
 
     </Container>
 
