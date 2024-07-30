@@ -27,7 +27,7 @@ export function WalletStatus() {
 						<h6>Wallet not connected. Please connect your wallet to enjoy these goodies:</h6>
 						<Row>
 							<Col>
-								<Card style={{ width: '18rem', marginTop: "20px" }}>
+								<Card style={{height: "190px", width: '18rem', marginTop: "20px" }}>
 									<Card.Img variant="top" src="idea.png" style={{ width: "40px", alignSelf: "center", marginTop: "10px" }} />
 									<Card.Body>
 										<Card.Title>Upload Records</Card.Title>
@@ -36,10 +36,10 @@ export function WalletStatus() {
 								</Card>
 							</Col>
 							<Col>
-								<Card style={{ width: '18rem', marginTop: "20px" }}>
+								<Card style={{height: "190px", width: '18rem', marginTop: "20px" }}>
 									<Card.Img variant="top" src="distribution.png" style={{ width: "40px", alignSelf: "center", marginTop: "10px" }} />
 									<Card.Body>
-										<Card.Title>Store Records on Chain</Card.Title>
+										<Card.Title>Store records on chain</Card.Title>
 										<h6>Securely store in an immutable blockchain and encrypted distributed file system (IPFS)</h6>
 									</Card.Body>
 								</Card>
@@ -47,20 +47,20 @@ export function WalletStatus() {
 						</Row>
 						<Row>
 							<Col>
-								<Card style={{ width: '18rem', marginTop: "20px" }}>
+								<Card style={{height: "190px", width: '18rem', marginTop: "20px" }}>
 									<Card.Img variant="top" src="approve.png" style={{ width: "40px", alignSelf: "center", marginTop: "10px" }} />
 									<Card.Body>
-										<Card.Title>Transfer Records to Trustee for safekeeping</Card.Title>
-										<h6>Securely transfer encrypted Records to nominated Trustee for safekeeping</h6>
+										<Card.Title>Transfer records to trustee for safekeeping</Card.Title>
+										<h6>Securely transfer encrypted records to nominated trustee for safekeeping</h6>
 									</Card.Body>
 								</Card>
 							</Col>
 							<Col>
-								<Card style={{ width: '18rem', marginTop: "20px" }}>
+								<Card style={{ height: "190px", width: '18rem', marginTop: "20px" }}>
 									<Card.Img variant="top" src="donation.png" style={{ width: "40px", alignSelf: "center", marginTop: "10px" }} />
 									<Card.Body>
-										<Card.Title>Condolences Donation</Card.Title>
-										<h6>Anyone can securely donate SUI cryptocurrency to a nominated Trustee in the event of a person's passing</h6>
+										<Card.Title>Condolences donation</Card.Title>
+										<h6>Anyone can securely donate SUI cryptocurrency to a nominated trustee in the event of a person's passing</h6>
 									</Card.Body>
 								</Card>
 							</Col>

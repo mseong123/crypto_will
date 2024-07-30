@@ -9,20 +9,20 @@ export function SelectionScreen ({setPage}) {
     <Container>
         <h5>Select Services</h5>
         <Row>
-            <Card className="my-2">
+            <Card className="my-2" style={{width: "200px", marginRight: "36px"}}>
                 <Card.Body>
-                    <Card.Img variant="top" src="idea.png" className="my-2" style={{width: "40px", alignSelf: "center"}}/>
+                    <Card.Img variant="top" src="idea.png" className="my-2 center" style={{width: "40px", alignSelf: "center"}}/>
                     <Card.Title><Button onClick={()=>setPage("Record")}>Record Management</Button></Card.Title>
                 </Card.Body>
             </Card>
-            <Card className="my-2">
+            <Card className="my-2" style={{width: "200px", marginRight: "36px"}}>
                 <Card.Body>
-                    <Card.Img variant="top" src="approve.png" className="my-2" style={{width: "40px", alignSelf: "center"}}/>
+                    <Card.Img variant="top" src="approve.png" className="my-2 center" style={{width: "40px", alignSelf: "center"}}/>
                     <Card.Title><Button onClick={()=>setPage("TrusteeSummary")}>Trustee</Button></Card.Title>
                 </Card.Body>
             </Card>
-            <Card className="my-2">
-                <Card.Img variant="top" src="donation.png" className="my-2" style={{width: "40px", alignSelf: "center"}}/>
+            <Card className="my-2" style={{width: "200px", padding: "10px 20px"}}>
+                <Card.Img variant="top" src="donation.png" className="my-2 center" style={{width: "40px", alignSelf: "center"}}/>
                 <Card.Title><Button onClick={()=>setPage("CondolenceDonation")}>Condolences Donation</Button></Card.Title>
             </Card>
         </Row>
