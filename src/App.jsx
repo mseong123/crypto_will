@@ -10,24 +10,22 @@ import { CondolenceDonation } from "./components/CondolenceDonation";
 import { NavBar } from "./components/NavBar";
 import Container from 'react-bootstrap/Container';
 import { EncryptionPhrase } from "./components/EncryptionPhrase";
-import { useAuth, AuthState } from './components/AuthContext';
 
 
 function App() {
-	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, currentPage, setCurrentPage} = useAuth();
   const currentAccount = useCurrentAccount();
   const [accountExist, setAccountExist] = useState(false)
   const [accountState, setAccountState] = useState(false)
   // const [page, setPage] = useState(currentPage)
-	const cp = sessionStorage.getItem('currentPage')
+	// const cp = sessionStorage.getItem('currentPage')
   // const [page, setPage] = useState(cp ? cp : "SelectionScreen")
   const [page, setPage] = useState("SelectionScreen")
   const [encryptionPhrase,setEncryptionPhrase] = useState("");
-	useEffect(() => {
-		sessionStorage.setItem('currentPage', page);
-		
-		setCurrentPage(page);
-	}, [page])
+	// useEffect(() => {
+	// 	sessionStorage.setItem('currentPage', page);
+	// 	
+	// 	setCurrentPage(page);
+	// }, [page])
   let ComponentToRender;
   useEffect(() => {
     setEncryptionPhrase("")
