@@ -3,3 +3,6 @@ front_end/move/crypto_will/build/
 front_end/dist/
 node_modules/
 
+
+# Local Netlify folder
+.netlify
