@@ -22,10 +22,16 @@ export function RequestDonation() {
 	const signAndExecute = useSignature();
 	const account = useCurrentAccount();
 	const packageId = useNetworkVariable('packageId');
+	const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
+	const suiClient = useSuiClient()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+
+	const [txnDigest, setTxnDigest] = useState("");
+	const enoki = useEnokiFlow()
 	const response = useObjectQuery(
 		'getOwnedObjects',
 		{
-			owner: account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
 			filter: {
 				StructType: `${packageId}::crypto_will::Donated`,
 			},
@@ -35,15 +41,9 @@ export function RequestDonation() {
 		}
 	);
 
-	const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
-	const suiClient = useSuiClient()
-	const { isLoggedIn, userDetails, login, logOut } = useLogin();
-
-	const [txnDigest, setTxnDigest] = useState("");
-	const enoki = useEnokiFlow()
 
 	async function requestDonationZK(response, donorAddress, donorAlias, donorDescription, packageID, enoki, setLoading, id_donorAddress, id_donorAlias, id_donorDescription) {
-		const keypair = await enoki.getKeypair();
+		const keypair = await enoki.getKeypair({network: "testnet"});
 		const tx = new Transaction();
 		tx.moveCall({
 			arguments: [tx.pure.address(donorAddress), tx.pure.string(donorAlias), tx.pure.string(donorDescription)],
@@ -59,7 +59,7 @@ export function RequestDonation() {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);

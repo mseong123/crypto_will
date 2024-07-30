@@ -27,7 +27,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
 	const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
               filter:{
                   StructType: `${packageId}::crypto_will::PublicKeyCap`,
               },
@@ -42,12 +42,12 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
     const [txnDigest, setTxnDigest] = useState("");
     const enoki = useEnokiFlow()
 
-    async function sendTrusteeRecordZK(packageId, enoki) {
-        const keypair = await enoki.getKeypair()
+    async function sendTrusteeRecordZK(packageID, enoki) {
+        const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 		tx.moveCall({
 			arguments: [],
-			target: `${packageId}::crypto_will::transferRecord`
+			target: `${packageID}::crypto_will::transferRecord`
 		});
 
 		try {
@@ -59,7 +59,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Send Trustee Records", err);
@@ -75,7 +75,7 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         const trusteeEncryptedCID = accountDecryptedCID.map(CID=>encryptAES(publicKey,CID))
         const filename = accountResponse.data.data[0].data.content.fields.filename;
         const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
-        isLoggedIn === LogStatus.wallet ?sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute): sendTrusteeRecordZK(packageID, enoki)
+        isLoggedIn === LogStatus.wallet ?sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute): sendTrusteeRecordZK(packageId, enoki)
         
     }
    

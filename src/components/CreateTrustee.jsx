@@ -16,7 +16,6 @@ import Image from 'react-bootstrap/Image';
 import { LogStatus, useLogin } from './UserContext';
 import { Transaction } from "@mysten/sui/transactions";
 import { useEnokiFlow } from "@mysten/enoki/react";
-import { useState } from "react";
 
 export function CreateTrustee({ account, response }) {
 	const [loading, setLoading] = useState(false)
@@ -32,7 +31,7 @@ export function CreateTrustee({ account, response }) {
 	const enoki = useEnokiFlow()
 
 	async function createTrusteeZK(response, trusteeAddress, trusteeDescription, testatorAlias, packageID, enoki,setLoading, id_trusteeAddress, id_trusteeDescription, id_testatorAlias) {
-		const keypair = await enoki.getKeypair()
+		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 		tx.moveCall({
 			arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.address(trusteeAddress), tx.pure.string(trusteeDescription), tx.pure.string(testatorAlias), tx.pure.string(String(Date.now()))],
@@ -49,7 +48,7 @@ export function CreateTrustee({ account, response }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);

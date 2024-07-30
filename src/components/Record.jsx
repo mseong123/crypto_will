@@ -37,7 +37,7 @@ export function Record({ encryptionPhrase, response, fields, index }) {
 
 
 	async function deleteRecordZK(index, packageID, response, enoki, setLoading) {
-		const keypair = await enoki.getKeypair()
+		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 		console.log(response.data.data[0].data.objectId)
 		console.log(index)
@@ -55,7 +55,7 @@ export function Record({ encryptionPhrase, response, fields, index }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error deleting record.", err);

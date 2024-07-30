@@ -32,7 +32,7 @@ export function SendRequestForRecord({ trusteeResponse }) {
 	const response = useObjectQuery(
 		'getOwnedObjects',
 		{
-			owner: account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
 			filter: {
 				StructType: `${packageId}::crypto_will::TrusteeCap`,
 			},
@@ -43,7 +43,7 @@ export function SendRequestForRecord({ trusteeResponse }) {
 	);
 
 	async function sendRequestForRecordZK(response, encryptionPhrase, account, packageID, enoki, id, index, setLoading) {
-		const keypair = await enoki.getKeypair()
+		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 
 		tx.moveCall({
@@ -60,7 +60,7 @@ export function SendRequestForRecord({ trusteeResponse }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);

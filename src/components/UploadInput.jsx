@@ -16,6 +16,7 @@ import { Transaction } from "@mysten/sui/transactions";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import { SuiClient } from "@mysten/sui/client";
 import { LogStatus, useLogin } from './UserContext';
+import { useSuiClient } from "@mysten/dapp-kit";
 
 function Input({index}) {
     return (
@@ -59,12 +60,13 @@ export function UploadInput({encryptionPhrase, response}) {
     const [txnDigest, setTxnDigest] = useState("");
     const enoki = useEnokiFlow()
 
-    async function updateAccountZK(packageId, enoki) {
-        const keypair = await enoki.getKeypair()
+    async function updateAccountZK(packageID, enoki) {
+        const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
+		tx.setGasBudget(100000000)
 		tx.moveCall({
 			arguments: [],
-			target: `${packageId}::crypto_will::upload`
+			target: `${packageID}::crypto_will::upload`
 		});
 
 		try {
@@ -76,7 +78,6 @@ export function UploadInput({encryptionPhrase, response}) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
 			}
 		} catch (err) {
 			console.log("Update Records", err);
@@ -102,7 +103,7 @@ export function UploadInput({encryptionPhrase, response}) {
                     for (let i = 0; i < hash.length; i++) {
                         encryptedCID.push(encryptAES(encryptionPhrase, hash[i].IpfsHash))
                     }
-                    isLoggedIn === LogStatus.wallet ?updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput): updateAccountZK(packageID, enoki)
+                    isLoggedIn === LogStatus.wallet ?updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput): updateAccountZK(packageId, enoki)
                     
                 }
             }} 

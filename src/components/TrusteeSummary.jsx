@@ -11,13 +11,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { SuiClient } from "@mysten/sui/client";
+import { LogStatus, useLogin } from './UserContext';
 export function TrusteeSummary() {
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
 	  const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
               filter:{
                   StructType: `${packageId}::crypto_will::Trustee`,
               },

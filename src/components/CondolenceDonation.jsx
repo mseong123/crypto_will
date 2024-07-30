@@ -26,10 +26,15 @@ export function CondolenceDonation() {
 	const signAndExecute = useSignature();
 	const account = useCurrentAccount();
 	const packageId = useNetworkVariable('packageId');
+	const suiClient = useSuiClient()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+
+	const [txnDigest, setTxnDigest] = useState("");
+	const enoki = useEnokiFlow()
 	const response = useObjectQuery(
 		'getOwnedObjects',
 		{
-			owner: account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
 			filter: {
 				StructType: `${packageId}::crypto_will::DonationCap`,
 			},
@@ -39,11 +44,6 @@ export function CondolenceDonation() {
 		}
 	);
 
-	const suiClient = useSuiClient()
-	const { isLoggedIn, userDetails, login, logOut } = useLogin();
-
-	const [txnDigest, setTxnDigest] = useState("");
-	const enoki = useEnokiFlow()
 
 	async function sendDonation(response, data, amount, packageID, signAndExecute, setLoading, id_sendDonation) {
 		const tx = new Transaction();
@@ -66,7 +66,7 @@ export function CondolenceDonation() {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);

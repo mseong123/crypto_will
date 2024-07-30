@@ -30,6 +30,7 @@ export function CreateAccount({ refetch }) {
 	async function createAccountZK(packageId, enoki) {
 		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
+		tx.setGasBudget(1)
 		tx.moveCall({
 			arguments: [],
 			target: `${packageId}::crypto_will::new`
@@ -44,7 +45,7 @@ export function CreateAccount({ refetch }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				getBalance(userDetails.address);
+				
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);

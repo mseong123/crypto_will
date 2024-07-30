@@ -11,6 +11,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { SuiClient } from "@mysten/sui/client";
+import { LogStatus, useLogin } from './UserContext';
 const MIST_PER_SUI = 1000000000;
 
 export function SuiBalance({donatedResponse, setSuiBalance}) {
@@ -19,10 +22,11 @@ export function SuiBalance({donatedResponse, setSuiBalance}) {
     const signAndExecute = useSignature();
     const account = useCurrentAccount();
     const packageId = useNetworkVariable('packageId');
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
     const response = useObjectQuery(
         'getBalance',
         {
-          owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
           filter:{
                 coinType:"0x2::sui::SUI"
             },
