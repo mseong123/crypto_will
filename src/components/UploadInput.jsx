@@ -73,65 +73,66 @@ export function UploadInput({ encryptionPhrase, response }) {
 				arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string(category), tx.pure.string(description), tx.pure.string(encryptedCID[i]), tx.pure.string(file.name), tx.pure.string(String(Date.now()))],
 				target: `${packageID}::crypto_will::upload`
 			});
-
-			try {
-				const txnRes = await suiClient.signAndExecuteTransaction({
-					transaction: tx,
-					signer: keypair,
-				})
-
-				if (txnRes && txnRes?.digest) {
-					setTxnDigest(txnRes?.digest);
-					alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-					response.refetch();
-				}
-			} catch (err) {
-				console.log("Update Records", err);
-				alert("Error Updating Records");
-			}
 		}
 
+		try {
+			const txnRes = await suiClient.signAndExecuteTransaction({
+				transaction: tx,
+				signer: keypair,
+			})
 
-		return (
-			<>
-				<Form className="my-3" onSubmit={async (e) => {
-					e.preventDefault();
-					setError(null);
-					setLoading(true);
-					const encryptedCID = [];
-					const hash = [];
-					for (let i = 0; i < input.length; i++) {
-						let result = await pinFileToIPFS(setError, "file-" + i)
-						hash.push(result);
-					}
-
-					if (hash.length > 0) {
-						for (let i = 0; i < hash.length; i++) {
-							encryptedCID.push(encryptAES(encryptionPhrase, hash[i].IpfsHash))
-						}
-						isLoggedIn === LogStatus.wallet ? updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput) : updateAccountZK(packageId, enoki)
-
-					}
-				}}
-				>
-
-					{loading ? <Alert className="mt-3" variant="dark">Uploading...</Alert> : null}
-					{error ? <Alert className="mt-3" variant="dark">{error}</Alert> : null}
-					{input}
-					<Container>
-						<Button type="button" className="my-2" onClick={() => setInput([...input, <Input key={input.length} index={input.length} />])}>
-							<Image src="add.png" rounded style={{ width: "45px" }} />
-						</Button>
-						<Button type="button" className="my-2" onClick={() => setInput(input.slice(0, -1))}>
-							<Image src="delete.png" rounded style={{ width: "45px" }} />
-						</Button>
-						<Button type="submit" className="my-2" disabled={input.length > 0 ? false : true} style={{ backgroundColor: "#eeeeee", borderColor: "#eeeeee" }}>
-							<Image src="file1.png" rounded style={{ width: "45px" }} />
-						</Button>
-					</Container>
-
-				</Form>
-			</>
-		)
+			if (txnRes && txnRes?.digest) {
+				setTxnDigest(txnRes?.digest);
+				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				response.refetch();
+			}
+		} catch (err) {
+			console.log("Update Records", err);
+			alert("Error Updating Records");
+		}
 	}
+
+
+	return (
+		<>
+			<Form className="my-3" onSubmit={async (e) => {
+				e.preventDefault();
+				setError(null);
+				setLoading(true);
+				const encryptedCID = [];
+				const hash = [];
+				for (let i = 0; i < input.length; i++) {
+					let result = await pinFileToIPFS(setError, "file-" + i)
+					hash.push(result);
+				}
+
+				if (hash.length > 0) {
+					for (let i = 0; i < hash.length; i++) {
+						encryptedCID.push(encryptAES(encryptionPhrase, hash[i].IpfsHash))
+					}
+					isLoggedIn === LogStatus.wallet ? updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput) : updateAccountZK(packageId, enoki)
+
+				}
+			}}
+			>
+
+				{loading ? <Alert className="mt-3" variant="dark">Uploading...</Alert> : null}
+				{error ? <Alert className="mt-3" variant="dark">{error}</Alert> : null}
+				{input}
+				<Container>
+					<Button type="button" className="my-2" onClick={() => setInput([...input, <Input key={input.length} index={input.length} />])}>
+						<Image src="add.png" rounded style={{ width: "45px" }} />
+					</Button>
+					<Button type="button" className="my-2" onClick={() => setInput(input.slice(0, -1))}>
+						<Image src="delete.png" rounded style={{ width: "45px" }} />
+					</Button>
+					<Button type="submit" className="my-2" disabled={input.length > 0 ? false : true} style={{ backgroundColor: "#eeeeee", borderColor: "#eeeeee" }}>
+						<Image src="file1.png" rounded style={{ width: "45px" }} />
+					</Button>
+				</Container>
+
+			</Form>
+		</>
+	)
+}
 
