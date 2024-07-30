@@ -78,6 +78,7 @@ export function UploadInput({encryptionPhrase, response}) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				response.refetch();
 			}
 		} catch (err) {
 			console.log("Update Records", err);
