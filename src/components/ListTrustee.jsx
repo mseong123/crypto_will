@@ -24,6 +24,11 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
     const signAndExecute = useSignature();
+	const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
+	const suiClient = useSuiClient()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+	const [txnDigest, setTxnDigest] = useState("");
+	const enoki = useEnokiFlow()
 	const response = useObjectQuery(
       'getOwnedObjects',
       {
@@ -36,11 +41,6 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
       {
       }
     );
-    const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
-	const suiClient = useSuiClient()
-	const { isLoggedIn, userDetails, login, logOut } = useLogin();
-    const [txnDigest, setTxnDigest] = useState("");
-    const enoki = useEnokiFlow()
 
     async function sendTrusteeRecordZK(packageID, enoki) {
         const keypair = await enoki.getKeypair({network: "testnet"})
