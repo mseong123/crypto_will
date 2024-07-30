@@ -13,7 +13,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import { SuiBalance } from "./SuiBalance";
-import { sendDonation } from "../utils/sendDonation";
+import { MIST_PER_SUI, sendDonation } from "../utils/sendDonation";
 import { LogStatus, useLogin } from './UserContext';
 import { Transaction } from "@mysten/sui/transactions";
 import { useEnokiFlow } from "@mysten/enoki/react";
@@ -45,7 +45,8 @@ export function CondolenceDonation() {
 	);
 
 
-	async function sendDonation(response, data, amount, packageID, signAndExecute, setLoading, id_sendDonation) {
+	async function sendDonationZK(response, data, amount, packageID, enoki, setLoading, id_sendDonation) {
+		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 		const [coin] = tx.splitCoins(tx.gas, [MIST_PER_SUI * amount]);
 		tx.transferObjects(
@@ -66,6 +67,7 @@ export function CondolenceDonation() {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				response.refetch()
 
 			}
 		} catch (err) {
@@ -114,7 +116,10 @@ export function CondolenceDonation() {
 									setError("Insufficient SUI coins to send.");
 								else {
 									setLoading(true);
-									sendDonation(response, data, parseFloat(amount), packageId, signAndExecute, setLoading, "sendDonation")
+									if (isLoggedIn === LogStatus.wallet)
+										sendDonation(response, data, parseFloat(amount), packageId, signAndExecute, setLoading, "sendDonation")
+									if (isLoggedIn === LogStatus.zk)
+										sendDonationZK(response, data, parseFloat(amount), packageId, enoki, setLoading, "sendDonation")
 								}
 
 							}}
