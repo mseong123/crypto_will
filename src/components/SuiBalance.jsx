@@ -47,7 +47,7 @@ export function SuiBalance({donatedResponse, setSuiBalance}) {
 	if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
   
     return (
-        <Card className="my-2 mx-2">
+        <Card className="my-2 mx-3">
             <Card.Body>
                 <Card.Img src="sui-coin.png" className="d-inline-block mx-2" rounded style={{width: "35px"}}/>
                 <Card.Text className="d-inline-block" >Coin Balance: {response.data.totalBalance / MIST_PER_SUI} SUI</Card.Text>

@@ -66,7 +66,7 @@ export function CondolenceDonation() {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
-				
+
 			}
 		} catch (err) {
 			console.log("Error transferring SUI.", err);
@@ -82,13 +82,13 @@ export function CondolenceDonation() {
 		return (
 			<Container style={{ padding: "0px", height: "100%" }} className="record-container">
 				<Row style={{ paddingTop: "10px" }}>
-					<Col className="" style={{ paddingRight: "0px" }}><Image src="donation.png" rounded style={{ width: "70px", float: "inline-end" }} /></Col>
+					<Col className="col-md-5" style={{ paddingRight: "0px" }}><Image src="small.png" rounded style={{ width: "70px", float: "inline-end" }} /></Col>
 					<Col><h5 className="mb-3" style={{ float: "left", padding: "15px", paddingLeft: "0px" }}>Condolences Donation</h5></Col>
 				</Row>
 				<SuiBalance donatedResponse={response} setSuiBalance={setSuiBalance} />
-				<Card className="my-2 mx-2">
+				<Card className="my-2 mx-3">
 					<Card.Body>
-						<Card.Text>No Pending Donation Request</Card.Text>
+						<Card.Text>No pending donation request</Card.Text>
 					</Card.Body>
 				</Card>
 			</Container>
@@ -145,12 +145,12 @@ export function CondolenceDonation() {
 	return (
 		<Container style={{ padding: "0px", height: "100%" }} className="record-container">
 			<Row style={{ paddingTop: "10px" }}>
-				<Col className="" style={{ paddingRight: "0px" }}><Image src="donation.png" rounded style={{ width: "70px", float: "inline-end" }} /></Col>
+				<Col className="col-md-5" style={{ paddingRight: "0px" }}><Image src="small.png" rounded style={{ width: "70px", float: "inline-end" }} /></Col>
 				<Col><h5 className="mb-3" style={{ float: "left", padding: "15px", paddingLeft: "0px" }}>Condolences Donation</h5></Col>
 			</Row>
 			<SuiBalance donatedResponse={response} setSuiBalance={setSuiBalance} />
-			{loading ? <Alert className="mt-3" variant="dark">Uploading...</Alert> : null}
-			{error ? <Alert className="mt-3" variant="dark">{error}</Alert> : null}
+			{loading ? <Alert className="mt-3 mx-3" variant="dark">Uploading...</Alert> : null}
+			{error ? <Alert className="mt-3 mx-3" variant="dark">{error}</Alert> : null}
 			<DonationList />
 		</Container>
 	)
