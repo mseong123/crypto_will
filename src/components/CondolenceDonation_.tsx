@@ -103,6 +103,7 @@ export function CondolenceDonation({ }) {
 										type="number"
 										size="sm"
 										className='mb-2'
+										step="0.00000000000000000001"
 									/>
 								</Form.Group>
 								<Button type="submit">

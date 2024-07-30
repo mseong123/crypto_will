@@ -72,7 +72,6 @@ export function RequestDonation() {
                             const donorAddress = document.getElementById("donorAddress").value
                             const donorAlias = document.getElementById("donorAlias").value
                             const donorDescription = document.getElementById("donorDescription").value
-                            console.log("here")
                             requestDonation(response, donorAddress, donorAlias, donorDescription, packageId, signAndExecute, setLoading, "donorAddress", "donorAlias", "donorDescription")
                         }}
                         >
