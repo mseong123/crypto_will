@@ -1,7 +1,7 @@
 import { Transaction } from "@mysten/sui/transactions";
 
 
-const MIST_PER_SUI=1000000000;
+export const MIST_PER_SUI=1000000000;
 
 export function sendDonation(response,data,amount,packageID, signAndExecute, setLoading, id_sendDonation) {
     const tx = new Transaction();

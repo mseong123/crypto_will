@@ -18,13 +18,13 @@ export function CreateAccount({ refetch }) {
 	const packageID = useNetworkVariable("packageId");
 	const account = useCurrentAccount();
 	const signAndExecute = useSignature()
+	const [loading, setLoading] = useState(false);
 
 	const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
 	const suiClient = useSuiClient()
 	const { isLoggedIn, userDetails, login, logOut } = useLogin();
 
 	  const [txnDigest, setTxnDigest] = useState("");
-	  const [loading, setLoading] = useState(false);
 	  const enoki = useEnokiFlow()
 
 	async function createAccountZK(packageId, enoki) {
