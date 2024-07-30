@@ -30,7 +30,7 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
 	  const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
               filter:{
                   StructType: `${packageId}::crypto_will::Record`,
               },
