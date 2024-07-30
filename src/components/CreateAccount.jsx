@@ -30,7 +30,7 @@ export function CreateAccount({ refetch }) {
 	async function createAccountZK(packageId, enoki) {
 		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
-		tx.setGasBudget(1)
+		tx.setGasBudget(10000000)
 		tx.moveCall({
 			arguments: [],
 			target: `${packageId}::crypto_will::new`
