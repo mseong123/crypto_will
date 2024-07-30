@@ -106,3 +106,19 @@
   .tooltip-container:hover .tooltip-text {
     opacity: 1;
   }
+
+.button-nav {
+    margin-right: 10px;
+    background: white;
+    border-color: #eeeeee;
+    color: black;
+    box-shadow: 0 5px 3px rgba(9, 2, 10, .4);
+    border-radius: 5px;
+}
+
+  .button-nav:hover {
+    color: black;
+    background-color:white;
+    border-color: #eeeeee;
+  }
+

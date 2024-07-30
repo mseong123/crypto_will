@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 export function SelectionScreen ({setPage}) {
     return (
     <Container>
-        <h5>Select Services</h5>
+        <h5>Select services</h5>
         <Row>
             <Card className="my-2" style={{width: "200px", marginRight: "36px"}}>
                 <Card.Body>

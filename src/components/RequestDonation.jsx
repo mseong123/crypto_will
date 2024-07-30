@@ -60,7 +60,7 @@ export function RequestDonation() {
         <>
             <Container style={{padding: "0px", height: "100%"}} className="record-container mb-3">
                 <Row style={{paddingTop: "10px", paddingBottom:"10px"}}>
-                    <Col style={{paddingRight: "0px"}}><Image src="donation.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+                    <Col className="col-md-5" style={{paddingRight: "0px"}}><Image src="small.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
                     <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Request Donation</h5></Col>
                 </Row>
                 <Card className="mb-3 mx-2">
@@ -121,8 +121,8 @@ export function RequestDonation() {
             </Container>
             <Container style={{padding: "0px", height: "100%"}} className="record-container">
                 <Row style={{paddingTop: "10px", paddingBottom:"10px"}}>
-                    <Col style={{paddingRight: "0px"}}><Image src="preview.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
-                    <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Donations:</h5></Col>
+                    <Col style={{paddingRight: "0px"}}><Image src="wink.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
+                    <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Donations</h5></Col>
                 </Row>
                 <hr></hr>
                 <DonorList/>

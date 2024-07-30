@@ -4,8 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LogStatus, useLogin } from './UserContext';
-
-
+import Button from 'react-bootstrap/Button';
 
 export function NavBar({ page, setPage }) {
 
@@ -13,17 +12,17 @@ export function NavBar({ page, setPage }) {
 	let ButtonToRender;
 	const { isLoggedIn, userDetails, login, logOut } = useLogin();
 
-	const LoginButton = () => (<NavDropdown title="Connect" id="basic-nav-dropdown">
-		<NavDropdown.Item onClick={login}>zkLogin</NavDropdown.Item>
-		<ConnectButton style={{ backgroundColor: "#ffffff" }} />
-	</NavDropdown>)
+	const LoginButton = () => (<>
+		<Button  className="button-nav" onClick={login}>zkLogin</Button>
+		<ConnectButton style={{ marginRight: "10px", background: "white", borderColor: "#eeeeee", color: "black", boxShadow: "0 5px 3px rgba(9, 2, 10, .4)" }} />
+	</>)
 
 	const WalletButton = () => (
 		<ConnectButton style={{ backgroundColor: "#ffffff" }} />
 	)
 
 	const ZkButton = () => (
-		<NavDropdown title={`Welcome, ${userDetails.address}`} id="basic-nav-dropdown">
+		<NavDropdown className="button-nav" title={`${userDetails.address.slice(0,20)}`} >
 			<NavDropdown.Item onClick={logOut}>Log Out</NavDropdown.Item>
 		</NavDropdown>
 	)

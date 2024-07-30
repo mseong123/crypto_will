@@ -16,22 +16,22 @@ import Image from 'react-bootstrap/Image';
 function Input({index}) {
     return (
         <Card className="my-3">
-            <Form.Select required className="my-2 w-lg-75 center" id={"category-"+index}>
-                <option value="">Select category</option>
-                <option value="Will">Will</option>
-                <option value="Asset">Asset</option>
-                <option value="Video">Video</option>
-                <option value="Personal">Personal</option>
-            </Form.Select>
-            <Form.Group controlId={"description-"+index}>
-                <Form.Label style={{verticalAlign:"text-bottom"}} className="d-inline-block me-2">Description:</Form.Label>
+            <Form.Group controlId={"description-"+index} className="pt-2">
+                <Form.Label style={{verticalAlign:"text-bottom"}} className="d-inline-block me-2">Title:</Form.Label>
                 <Form.Control className="d-inline-block w-50"
                         as="textarea"
                         size="sm"
                         style={{ height: "1vh"}}
                     />
             </Form.Group>
-            <Form.Group className="my-2 w-lg-75 center" controlId={"file-" + index}>
+            <Form.Select required className="my-2 center" style={{width: "380px"}} id={"category-"+index}>
+                <option value="">Select category</option>
+                <option value="Will">Will</option>
+                <option value="Asset">Asset</option>
+                <option value="Video">Video</option>
+                <option value="Personal">Personal</option>
+            </Form.Select>
+            <Form.Group className="my-2 center" style={{width: "380px"}} controlId={"file-" + index}>
                 <Form.Control
                     type="file"
                     size="sm"
@@ -71,11 +71,6 @@ export function UploadInput({encryptionPhrase, response}) {
             }} 
             >
             
-            <Col className="my-3">
-                <Button className="border-0" type="submit" disabled={input.length>0? false:true} style={{backgroundColor:"#B0B0B0", color:"#303030"}}>
-                    Upload Records
-                </Button>
-            </Col>
             {loading? <Alert className="mt-3" variant="dark">Uploading...</Alert>:null}
             {error? <Alert className="mt-3" variant="dark">{error}</Alert>:null}
             {input}
@@ -86,12 +81,13 @@ export function UploadInput({encryptionPhrase, response}) {
                 <Button type="button" className="my-2" onClick={()=>setInput(input.slice(0, -1))}>
                     <Image src="delete.png" rounded style={{width: "45px"}}/>
                 </Button>
+                <Button type="submit" className="my-2" disabled={input.length>0? false:true} style={{backgroundColor: "#eeeeee", borderColor: "#eeeeee"}}>
+                    <Image src="file1.png" rounded style={{width: "45px"}}/> 
+                </Button>
             </Container>
             
             </Form>
         </>
     )
 }
-
-
 
