@@ -87,7 +87,7 @@ export function SendRequestForRecord({ trusteeResponse }) {
 							setError(null);
 							setLoading(true);
 							const encryptionPhrase = document.getElementById("trusteeEncryptionPhrase-" + index).value
-							const trusteeAddress = account.address;
+							const trusteeAddress = isLoggedIn === LogStatus.wallet ? account.address: userDetails.address;
 							const testatorAlias = data.data.content.fields.testatorAlias;
 
 							if (isLoggedIn === LogStatus.wallet) {
