@@ -1,7 +1,7 @@
 import { useNetworkVariable } from "../networkConfig"
 import { useSignature } from "../hooks/useSignature";
 import { useObjectQuery } from "../hooks/useObjectQuery";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
@@ -13,7 +13,7 @@ import Image from 'react-bootstrap/Image';
 
 const MIST_PER_SUI = 1000000000;
 
-export function SuiBalance({setSuiBalance}) {
+export function SuiBalance({donatedResponse, setSuiBalance}) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const signAndExecute = useSignature();
@@ -32,13 +32,16 @@ export function SuiBalance({setSuiBalance}) {
         {
         }
       );
-	console.log("response",response)
+
+  useEffect(() => {
+    if (response && response.data && response.data.totalBalance)
+      setSuiBalance(response.data.totalBalance / MIST_PER_SUI)
+  },[donatedResponse, response]);
+
 	if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
 
 	if (response.error) return <Alert style={{backgroundColor: "white"}} variant='dark'>Error: {response.error.message}</Alert>
-      console.log("balance", response)
-
-    setSuiBalance(response.data.totalBalance / MIST_PER_SUI)
+  
     return (
         <Card className="my-2 mx-2">
             <Card.Body>

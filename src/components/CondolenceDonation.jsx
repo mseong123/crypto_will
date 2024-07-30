@@ -47,7 +47,7 @@ export function CondolenceDonation() {
                     <Col className="" style={{paddingRight: "0px"}}><Image src="donation.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
                     <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Condolences Donation</h5></Col>
                 </Row>
-				<SuiBalance setSuiBalance={setSuiBalance}/>
+				<SuiBalance donatedResponse={response} setSuiBalance={setSuiBalance}/>
                 <Card className="my-2 mx-2">
                     <Card.Body>
                         <Card.Text>No Pending Donation Request</Card.Text>
@@ -72,13 +72,10 @@ export function CondolenceDonation() {
                                 setError(null);
                                 
 								const amount = document.getElementById("sendDonation").value
-                                console.log("amount",amount)
-                                console.log("suibalance",suiBalance)
                                 if (parseFloat(amount) >= parseFloat(suiBalance))
                                     setError("Insufficient SUI coins to send.");
                                 else {
                                     setLoading(true);
-                                    console.log("morning")
                                     sendDonation(response, data, parseFloat(amount), packageId, signAndExecute, setLoading, "sendDonation")
                                 }
 								
@@ -113,7 +110,7 @@ export function CondolenceDonation() {
 						<Col className="" style={{paddingRight: "0px"}}><Image src="donation.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
 						<Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Condolences Donation</h5></Col>
 					</Row>
-					<SuiBalance setSuiBalance={setSuiBalance}/>
+					<SuiBalance donatedResponse={response} setSuiBalance={setSuiBalance}/>
                     {loading? <Alert className="mt-3" variant="dark">Uploading...</Alert>:null}
                     {error? <Alert className="mt-3" variant="dark">{error}</Alert>:null}
 					<DonationList/>

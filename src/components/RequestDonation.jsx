@@ -44,7 +44,7 @@ export function RequestDonation() {
                             <Row><Col className='col-md-1'><Image src="calendar.png" rounded style={{width: "25px"}}/></Col>
                             <Col><h6 style={{ float: "left", marginTop: "6px"}}>{data.data.content.fields.donorAlias}</h6></Col></Row>
                             <Row><Col className='col-md-1'><Image src="donation.png" rounded style={{width: "25px"}}/></Col>
-                            <Col><h6 style={{ float: "left", marginTop: "6px"}}>{data.data.content.fields.amount}</h6></Col></Row>
+                            <Col><h6 style={{ float: "left", marginTop: "6px"}}>{data.data.content.fields.amount + " SUI"}</h6></Col></Row>
                         </Card.Body>
                     </Card>
                 </Container>

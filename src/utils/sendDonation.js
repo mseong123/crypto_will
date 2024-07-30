@@ -5,7 +5,6 @@ const MIST_PER_SUI=1000000000;
 
 export function sendDonation(response,data,amount,packageID, signAndExecute, setLoading, id_sendDonation) {
     const tx = new Transaction();
-    console.log("ms",data)
     const [coin] = tx.splitCoins(tx.gas, [MIST_PER_SUI * amount]);
     tx.transferObjects(
       [coin],
@@ -15,7 +14,7 @@ export function sendDonation(response,data,amount,packageID, signAndExecute, set
       arguments: [tx.object(data.data.objectId), tx.pure.string(String(amount))],
       target: `${packageID}::crypto_will::receiveDonation`,
     });
-  console.log("here")
+  
     signAndExecute(
       {
         transaction: tx,

@@ -25,10 +25,13 @@ function App() {
   const [encryptionPhrase,setEncryptionPhrase] = useState("");
 	useEffect(() => {
 		sessionStorage.setItem('currentPage', page);
-		console.log(page)
+		
 		setCurrentPage(page);
 	}, [page])
   let ComponentToRender;
+  useEffect(() => {
+		setPage("SelectionScreen")
+	}, [currentAccount])
 
   const SelectionScreenComponent = ()=>
   (<SelectionScreen setPage={setPage}/>)
