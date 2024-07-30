@@ -12,6 +12,10 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
+import { Transaction } from "@mysten/sui/transactions";
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { SuiClient } from "@mysten/sui/client";
+import { LogStatus, useLogin } from './UserContext';
 
 function Input({index}) {
     return (
@@ -48,6 +52,39 @@ export function UploadInput({encryptionPhrase, response}) {
     const signAndExecute = useSignature();
     const packageId = useNetworkVariable('packageId');
     const [input, setInput] = useState([]);
+
+    const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
+	const suiClient = useSuiClient()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+    const [txnDigest, setTxnDigest] = useState("");
+    const enoki = useEnokiFlow()
+
+    async function updateAccountZK(packageId, enoki) {
+        const keypair = await enoki.getKeypair()
+		const tx = new Transaction();
+		tx.moveCall({
+			arguments: [],
+			target: `${packageId}::crypto_will::upload`
+		});
+
+		try {
+			const txnRes = await suiClient.signAndExecuteTransaction({
+				transaction: tx,
+				signer: keypair,
+			})
+
+			if (txnRes && txnRes?.digest) {
+				setTxnDigest(txnRes?.digest);
+				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				getBalance(userDetails.address);
+			}
+		} catch (err) {
+			console.log("Update Records", err);
+			alert("Error Updating Records");
+		}
+	}
+
+
     return (
         <>
             <Form className="my-3" onSubmit={async (e)=>{
@@ -65,8 +102,8 @@ export function UploadInput({encryptionPhrase, response}) {
                     for (let i = 0; i < hash.length; i++) {
                         encryptedCID.push(encryptAES(encryptionPhrase, hash[i].IpfsHash))
                     }
+                    isLoggedIn === LogStatus.wallet ?updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput): updateAccountZK(packageID, enoki)
                     
-                    updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput)
                 }
             }} 
             >

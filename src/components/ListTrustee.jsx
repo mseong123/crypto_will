@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useObjectQuery } from "../hooks/useObjectQuery"
 import { CreateAccount } from "./CreateAccount"
 import { useNetworkVariable } from "../networkConfig"
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
 import { sendTrusteeRecord } from "../utils/sendTrusteeRecord";
 import { useSignature } from "../hooks/useSignature";
 import { decryptAES,encryptAES } from "../utils/encryptionAES"
@@ -13,6 +13,10 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
+
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { SuiClient } from "@mysten/sui/client";
+import { LogStatus, useLogin } from './UserContext';
 
 export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}) {
     const [error, setError]= useState(null)
@@ -32,6 +36,36 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
       {
       }
     );
+    const url = import.meta.env.VITE_APP_SUI_FULLNODE_URL;
+	const suiClient = useSuiClient()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+    const [txnDigest, setTxnDigest] = useState("");
+    const enoki = useEnokiFlow()
+
+    async function sendTrusteeRecordZK(packageId, enoki) {
+        const keypair = await enoki.getKeypair()
+		const tx = new Transaction();
+		tx.moveCall({
+			arguments: [],
+			target: `${packageId}::crypto_will::transferRecord`
+		});
+
+		try {
+			const txnRes = await suiClient.signAndExecuteTransaction({
+				transaction: tx,
+				signer: keypair,
+			})
+
+			if (txnRes && txnRes?.digest) {
+				setTxnDigest(txnRes?.digest);
+				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				getBalance(userDetails.address);
+			}
+		} catch (err) {
+			console.log("Send Trustee Records", err);
+			alert("Error Sending Records");
+		}
+	}
 
     function handleTransfer(objectID, publicKey) {
         const category = accountResponse.data.data[0].data.content.fields.category;
@@ -41,7 +75,8 @@ export function ListTrustee({encryptionPhrase, accountResponse, trusteeResponse}
         const trusteeEncryptedCID = accountDecryptedCID.map(CID=>encryptAES(publicKey,CID))
         const filename = accountResponse.data.data[0].data.content.fields.filename;
         const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
-        sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute)
+        isLoggedIn === LogStatus.wallet ?sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute): sendTrusteeRecordZK(packageID, enoki)
+        
     }
    
     function matchPublicKey(address) {

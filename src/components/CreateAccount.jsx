@@ -28,7 +28,7 @@ export function CreateAccount({ refetch }) {
 	  const enoki = useEnokiFlow()
 
 	async function createAccountZK(packageId, enoki) {
-		const keypair = await enoki.getKeypair()
+		const keypair = await enoki.getKeypair({network: "testnet"})
 		const tx = new Transaction();
 		tx.moveCall({
 			arguments: [],
