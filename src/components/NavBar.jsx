@@ -22,7 +22,7 @@ export function NavBar({ page, setPage }) {
 	)
 
 	const ZkButton = () => (
-		<NavDropdown className="button-nav" title={`${userDetails.address.slice(0,20)}`} >
+		<NavDropdown className="button-nav" title={`${userDetails.address.slice(0,10) + "....." + userDetails.address.slice(userDetails.address.length - 5 ,userDetails.address.length)}`} >
 			<NavDropdown.Item onClick={logOut}>Log Out</NavDropdown.Item>
 		</NavDropdown>
 	)
