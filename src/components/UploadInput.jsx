@@ -60,7 +60,7 @@ export function UploadInput({ encryptionPhrase, response }) {
 	const [txnDigest, setTxnDigest] = useState("");
 	const enoki = useEnokiFlow()
 
-	async function updateAccount(encryptedCID, response, packageID, enoki, setLoading, setInput) {
+	async function updateAccountZK(encryptedCID, response, packageID, enoki, setLoading, setInput) {
 		const keypair = await enoki.getKeypair({ network: "testnet" })
 		const tx = new Transaction();
 		tx.setGasBudget(100000000)
@@ -110,7 +110,7 @@ export function UploadInput({ encryptionPhrase, response }) {
 					for (let i = 0; i < hash.length; i++) {
 						encryptedCID.push(encryptAES(encryptionPhrase, hash[i].IpfsHash))
 					}
-					isLoggedIn === LogStatus.wallet ? updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput) :updateAccount(encryptedCID, response, packageId, enoki, setLoading, setInput) 
+					isLoggedIn === LogStatus.wallet ? updateAccount(encryptedCID, response, packageId, signAndExecute, setLoading, setInput) :updateAccountZK(encryptedCID, response, packageId, enoki, setLoading, setInput) 
 				}
 			}}
 			>
