@@ -65,7 +65,7 @@ export function UploadInput({encryptionPhrase, response}) {
 		const tx = new Transaction();
 		tx.setGasBudget(100000000)
 		tx.moveCall({
-			arguments: [],
+			arguments: [tx.object(response.data.data[0].data.objectId), tx.pure.string(category), tx.pure.string(description), tx.pure.string(encryptedCID[i]), tx.pure.string(file.name), tx.pure.string(String(Date.now()))],
 			target: `${packageID}::crypto_will::upload`
 		});
 
