@@ -45,6 +45,7 @@ export function CreateAccount({ refetch }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				refetch()
 				
 			}
 		} catch (err) {
