@@ -42,7 +42,7 @@ export function ListTrustee({ encryptionPhrase, accountResponse, trusteeResponse
 		}
 	);
 
-	async function sendTrusteeRecord(response, objectID, category, description, encryptedCID, filename, timestamp, packageID, enoki) {
+	async function sendTrusteeRecordZK(response, objectID, category, description, encryptedCID, filename, timestamp, packageID, enoki) {
 		const keypair = await enoki.getKeypair({ network: "testnet" });
 		const tx = new Transaction();
 
@@ -76,7 +76,7 @@ export function ListTrustee({ encryptionPhrase, accountResponse, trusteeResponse
 		const trusteeEncryptedCID = accountDecryptedCID.map(CID => encryptAES(publicKey, CID))
 		const filename = accountResponse.data.data[0].data.content.fields.filename;
 		const timestamp = accountResponse.data.data[0].data.content.fields.timestamp;
-		isLoggedIn === LogStatus.wallet ? sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute) :sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, enoki) 
+		isLoggedIn === LogStatus.wallet ? sendTrusteeRecord(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, signAndExecute) : sendTrusteeRecordZK(response, objectID, category, description, trusteeEncryptedCID, filename, timestamp, packageId, enoki)
 
 	}
 
@@ -97,7 +97,7 @@ export function ListTrustee({ encryptionPhrase, accountResponse, trusteeResponse
 	const TrusteeList = () => {
 		const trusteeCards = trusteeResponse.data.data[0].data.content.fields.trustee.map((data, index) => {
 			return (
-				<Container>
+				<Container key={index}>
 					<Card key={index} className="mb-2 mx-2">
 						<Card.Body style={{ color: "rgb(96, 96, 96)" }}>
 							<Row><Col className='col-md-1'><Image src="home.png" rounded style={{ width: "25px" }} /></Col>

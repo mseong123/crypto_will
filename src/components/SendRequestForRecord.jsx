@@ -60,6 +60,7 @@ export function SendRequestForRecord({ trusteeResponse }) {
 			if (txnRes && txnRes?.digest) {
 				setTxnDigest(txnRes?.digest);
 				alert(`Transfer Success. Digest: ${txnRes?.digest}`);
+				response.refetch();
 				
 			}
 		} catch (err) {
