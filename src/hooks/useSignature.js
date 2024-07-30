@@ -1,6 +1,7 @@
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { useNetworkVariable } from "../networkConfig"
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
+import { useEnokiFlow } from "@mysten/enoki/react";
 
 export function useSignature() {
     const suiClient = useSuiClient();
@@ -21,24 +22,3 @@ export function useSignature() {
 
 }
 
-// export function useZkSignature() {
-// 	const url = getFullnodeUrl("testnet")
-// 	const suiClient = new SuiClient({url: url})
-// 	suiClient.signAndExecuteTransaction({
-// 		transaction: tx,
-// 		signer: keypair
-// 	})
-// }
-export function useZkSignature() {
-    const url = getFullnodeUrl("testnet");
-    const suiClient = new SuiClient({ url: url });
-
-    const { mutate: signAndExecute } = async ({ transaction, signer }) => 
-         suiClient.signAndExecuteTransaction({
-            transaction: transaction,
-            signer: signer,
-		});
-
-	return signAndExecute
-
-}
