@@ -30,6 +30,7 @@ function App() {
 	}, [page])
   let ComponentToRender;
   useEffect(() => {
+    setEncryptionPhrase("")
 		setPage("SelectionScreen")
 	}, [currentAccount])
 
