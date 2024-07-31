@@ -6,6 +6,7 @@ import { encryptAES } from "../utils/encryptionAES"
 import { encryptAssym } from "../utils/encryptionAssym"
 import { AccordionRecord } from './AccordionRecord';
 import { CreateTrustee } from './CreateTrustee';
+import { UploadInput } from './UploadInput';
 import { ListTrustee } from './ListTrustee';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
@@ -16,14 +17,20 @@ import Image from 'react-bootstrap/Image';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { LogStatus, useLogin } from './UserContext';
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { useEffect, useState } from "react";
 
 export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
+  const enoki = useEnokiFlow()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
+	const [ address, setAddress ] = useState(null)
 	  const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
               filter:{
                   StructType: `${packageId}::crypto_will::Record`,
               },
@@ -32,6 +39,26 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
       {
       }
     );
+
+	// useEffect(() => {
+	// 	if (isLoggedIn === LogStatus.zk) {
+	// 		setAddress(userDetails.address)
+	// 	} else if (isLoggedIn === LogStatus.wallet) {
+	// 		setAddress(account?.address)
+	// 	} else {
+	// 		setAddress(null)
+	// 	}
+	// }, [])
+
+	useEffect(() => {
+		if (isLoggedIn === LogStatus.zk) {
+			setAddress(userDetails.address)
+		} else if (isLoggedIn === LogStatus.wallet) {
+			setAddress(account?.address)
+		} else {
+			setAddress(null)
+		}
+	}, [isLoggedIn])
     let ComponentToRender;
     
     if (response.isPending) return <Alert style={{backgroundColor: "white"}} variant='dark'>Loading...</Alert>;
@@ -55,26 +82,32 @@ export function AccountWrapper ({encryptionPhrase, setAccountExist, page}) {
           }
       </>)
 
-    const AccountActionComponent = ()=>
+    const RecordActionComponent = ()=>
       (<Container style={{padding: "0px", height: "100%"}} className="record-container">
           <Row style={{paddingTop: "10px"}}>
             <Col style={{paddingRight: "0px"}}><Image src="ghost-angel.png" rounded style={{width: "70px", float: "inline-end"}}/></Col>
-            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Account Action</h5></Col>
+            <Col><h5 className="mb-3" style={{float: "left", padding: "15px", paddingLeft: "0px"}}>Action</h5></Col>
           </Row>
           <CreateTrustee account={account} response={response}/>
           <ListTrustee encryptionPhrase={encryptionPhrase} accountResponse={response} trusteeResponse={response}/>
       </Container>)
+
+  const RecordUploadComponent = ()=>
+  (<>
+      {encryptionPhrase? 
+        <UploadInput encryptionPhrase={encryptionPhrase} response={response}/>:null}
+    </>
+  )
     
     if (page === "Record")
       ComponentToRender = RecordComponent;
-    else if (page === "AccountAction")
-      ComponentToRender = AccountActionComponent;
+    else if (page === "RecordAction")
+      ComponentToRender = RecordActionComponent;
+    else if (page === "RecordUpload")
+      ComponentToRender = RecordUploadComponent;
 
     return (
-      <>
-          <ComponentToRender/>
-      </>
-       
+      <ComponentToRender/>
     )
 }
 

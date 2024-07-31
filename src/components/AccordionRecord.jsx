@@ -1,4 +1,6 @@
 import Accordion from 'react-bootstrap/Accordion';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import { UploadInput} from './UploadInput';
 import { Record} from './Record';
 import { useState } from 'react'
@@ -31,7 +33,6 @@ export function AccordionRecord({encryptionPhrase, response}) {
             return <Record encryptionPhrase={encryptionPhrase} key={count++} response={response} fields={fields} index={index}/>
         }
     })
-    
     return (
         <>
              <Tabs
@@ -40,20 +41,16 @@ export function AccordionRecord({encryptionPhrase, response}) {
                 className="mb-3"
                 >
                 <Tab eventKey="0" title="Will" >
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Will"></UploadInput>
-                    {WillRecords}
+                    {WillRecords.length > 0? WillRecords: <p>No Files uploaded yet for this Category</p>}
                 </Tab>
                 <Tab eventKey="1" title="Asset">
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Asset"></UploadInput>
-                    {AssetRecords}
+                    {AssetRecords.length > 0? AssetRecords: <p>No Files uploaded yet for this Category</p>}
                 </Tab>
                 <Tab eventKey="2" title="Video">
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Video"></UploadInput>
-                    {VideoRecords}
+                    {VideoRecords.length > 0? VideoRecords: <p>No Files uploaded yet for this Category</p>}
                 </Tab>
                 <Tab eventKey="3" title="Documents">
-                    <UploadInput encryptionPhrase={encryptionPhrase} response={response} category="Personal"></UploadInput>
-                    {PersonalRecords}
+                    {PersonalRecords.length > 0? PersonalRecords: <p>No Files uploaded yet for this Category</p>} 
                 </Tab>
             </Tabs>
         </>

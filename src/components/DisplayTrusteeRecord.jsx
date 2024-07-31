@@ -16,6 +16,7 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { LogStatus, useLogin } from './UserContext';
 
 export function DisplayTrusteeRecord({address}) {
     const [loading, setLoading] = useState(false)
@@ -24,11 +25,12 @@ export function DisplayTrusteeRecord({address}) {
     const [decryptedCID, setDecryptedCID] = useState(null)
     const signAndExecute = useSignature();
     const packageId = useNetworkVariable('packageId');
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
     const account = useCurrentAccount()
     const response = useObjectQuery(
         'getOwnedObjects',
         {
-          owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
                 filter:{
                     StructType: `${packageId}::crypto_will::TrusteeRecord`,
                 },

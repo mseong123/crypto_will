@@ -1,14 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import { createKeypairFromBech32, GoogleAuth, MIST_PER_SUI, PartialZkLoginSignature } from './GoogleAuth';
-import { decryptAES } from "../utils/encryptionAES"
-import { IPFS_Gateway } from "../constants"
-import { downloadIPFS } from "../utils/downloadIPFS"
-import { deleteRecord } from "../utils/deleteRecord"
 import { useState, useEffect } from 'react'
-import { useAuth, AuthState } from './AuthContext';
 import { Transaction } from '@mysten/sui/transactions';
 import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
 import { getZkLoginSignature } from '@mysten/zklogin';
@@ -19,8 +12,6 @@ export type PartialZkLoginSignature = Omit<
 >;
 
 export function CondolenceDonation({ }) {
-	const { authState, jwt, userSpecificData, zkLoginSignature, zkLoginAddress, ephemeralSecretKey, walletAccount, logout, setJwt, setUserSpecificData, setZkLoginSignature, setZkLoginAddress, setEphemeralSecretKey, setAuthState, proof, setProof, seed, setSeed } = useAuth();
-
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false);
 	const [result, setResult] = useState<string | null>(null);
@@ -103,6 +94,7 @@ export function CondolenceDonation({ }) {
 										type="number"
 										size="sm"
 										className='mb-2'
+										step="0.00000000000000000001"
 									/>
 								</Form.Group>
 								<Button type="submit">

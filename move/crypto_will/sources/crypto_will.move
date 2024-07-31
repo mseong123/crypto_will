@@ -51,6 +51,21 @@ module crypto_will::crypto_will {
         trusteeDescription:String
     }
 
+    public struct DonationCap has key {
+        id:UID,
+        donorAddress:address,
+        trusteeAddress:address,
+        donorAlias:String,
+        description:String,
+    }
+
+    public struct Donated has key {
+        id:UID,
+        donorAddress:address,
+        donorAlias:String,
+        amount:String
+    }
+
     public fun new(ctx: &mut TxContext) {
         transfer::transfer(Record {
             id: object::new(ctx),
@@ -112,7 +127,6 @@ module crypto_will::crypto_will {
             testatorAlias:testatorAlias,
             trusteeDescription:trusteeDescription,
         }, testatorAddress);
-
     }
 
     public fun transferRecord(cap:PublicKeyCap,category:vector<String>,description:vector<String>,encryptedCID:vector<String>,filename:vector<String>,timestamp:vector<String>,ctx: &mut TxContext){
@@ -130,9 +144,29 @@ module crypto_will::crypto_will {
                 timestamp:timestamp,
             }
         }, trusteeAddress)
-
-
     }
 
-    
+    public fun sendDonationCap(donorAddress:address, donorAlias:String, description:String, ctx: &mut TxContext) {
+        transfer::transfer(DonationCap {
+            id:object::new(ctx),
+            donorAddress:donorAddress,
+            trusteeAddress:ctx.sender(),
+            donorAlias:donorAlias,
+            description:description,
+        }, donorAddress);
+    }
+
+    public fun receiveDonation(cap:DonationCap, amount:String, ctx: &mut TxContext) {
+        let DonationCap { id, donorAddress, trusteeAddress, donorAlias, description } = cap;
+        id.delete();
+        transfer::transfer({
+            Donated {
+                id:object::new(ctx),
+                donorAddress:ctx.sender(),
+                donorAlias:donorAlias,
+                amount:amount,
+            }
+        }, trusteeAddress)
+        
+    }
 }

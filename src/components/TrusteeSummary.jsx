@@ -11,13 +11,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
+import { useEnokiFlow } from "@mysten/enoki/react";
+import { SuiClient } from "@mysten/sui/client";
+import { LogStatus, useLogin } from './UserContext';
 export function TrusteeSummary() {
     const packageId = useNetworkVariable('packageId');
     const account = useCurrentAccount()
+	const { isLoggedIn, userDetails, login, logOut } = useLogin();
 	  const response = useObjectQuery(
       'getOwnedObjects',
       {
-        owner:account.address,
+			owner: isLoggedIn === LogStatus.wallet? account.address : userDetails.address,
               filter:{
                   StructType: `${packageId}::crypto_will::Trustee`,
               },
@@ -58,7 +62,7 @@ export function TrusteeSummary() {
                 <Card key={index} className="mb-2 mx-2">
                     <Card.Body style={{color: "rgb(96, 96, 96)"}}>
                         <Row><Col className='col-md-1'><Image src="home.png" rounded style={{width: "25px"}}/></Col>
-                        <Col><h6 style={{float: "left"}}>{data.data.content.fields.owner}</h6></Col></Row>
+                        <Col><h6 style={{float: "left", overflowWrap: "break-word"}}>{data.data.content.fields.owner}</h6></Col></Row>
                         <Row><Col className='col-md-1'><Image src="calendar.png" rounded style={{width: "25px"}}/></Col>
                         <Col><h6 style={{ float: "left", marginTop: "6px"}}>{Date(data.data.content.fields.timestamp).toString()}</h6></Col></Row>
                         <Row><Col className='col-md-1'><Image src="approve.png" rounded style={{width: "25px"}}/></Col>

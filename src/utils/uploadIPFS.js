@@ -30,6 +30,7 @@ export async function pinFileToIPFS (setError, id) {
       return res.data
       
     } catch (error) {
+		console.error("Error IPFS file upload:", error)
       setError("Error happened during uploading of file to IPFS")
     }
 }
